@@ -1,1 +1,73 @@
-# Runs db + backend + frontend together
+# docker-compose.yml - Framerate
+# Starts the whole project with one command:  docker compose up --build
+# It defines three containers ("services"): db, backend, frontend.
+#
+# The ${NAME} values are read from the .env file (copy .env.example to .env).
+# This keeps passwords and API keys out of this file, and out of GitHub.
+
+services:
+
+  # ---------------------------------------------------------------
+  # 1) DATABASE - PostgreSQL
+  # No code of ours here: we use the official ready-made image.
+  # ---------------------------------------------------------------
+  db:
+    image: postgres:16
+    environment:
+      # Postgres reads these on its FIRST start to create the database and user.
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      # Named volume: the data lives outside the container,
+      # so users and wishlists survive "docker compose down".
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      # Asks Postgres "are you ready?" every 5 seconds.
+      # The backend waits for this to pass before it starts.
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+    # No "ports:" on purpose. Only the backend talks to the database,
+    # over the internal Docker network, so it is not exposed to your computer.
+
+  # ---------------------------------------------------------------
+  # 2) BACKEND - Flask API (our code in ./backend)
+  # ---------------------------------------------------------------
+  backend:
+    build: ./backend            # builds the image from backend/Dockerfile
+    environment:
+      # How Flask finds the database. The host name is "db", which is the
+      # service name above. Docker's internal network resolves it for us.
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      # Secret used to sign login tokens (JWT).
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      # Your TMDB key. It stays here on the server and never reaches the browser.
+      TMDB_API_KEY: ${TMDB_API_KEY}
+    ports:
+      # "your computer : container". The API is at http://localhost:5000
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy   # start only after Postgres is ready
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------
+  # 3) FRONTEND - nginx serving our HTML/CSS/JS (./frontend)
+  # ---------------------------------------------------------------
+  frontend:
+    build: ./frontend           # builds the image from frontend/Dockerfile
+    ports:
+      # The website is at http://localhost:8080  (nginx listens on 80 inside)
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    # Note: the browser calls the backend directly at http://localhost:5000,
+    # so Flask will need CORS enabled (a one-line setup in app.py).
+
+# Named volumes used above. Docker creates and manages them.
+volumes:
+  pgdata:
