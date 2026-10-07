@@ -1,0 +1,6 @@
+# Files that should NOT be copied into the image.
+__pycache__/
+*.pyc
+.venv/
+*.db
+.env

@@ -46,6 +46,10 @@ services:
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}
       # Your TMDB key. It stays here on the server and never reaches the browser.
       TMDB_API_KEY: ${TMDB_API_KEY}
+      # The first manager account, created automatically on startup.
+      MANAGER_USERNAME: ${MANAGER_USERNAME}
+      MANAGER_EMAIL: ${MANAGER_EMAIL}
+      MANAGER_PASSWORD: ${MANAGER_PASSWORD}
     ports:
       # "your computer : container". The API is at http://localhost:8000 (docs at /docs)
       - "8000:8000"

@@ -2,10 +2,12 @@ fastapi
 uvicorn
 sqlalchemy<2.1
 psycopg2-binary
-requests
+httpx
 python-dotenv
 PyJWT
 # Notes:
 # - sqlalchemy is kept below 2.1: version 2.1 loads compiled files that some
 #   Windows security policies block. Version 2.0 falls back to plain Python.
 # - plain "uvicorn" (not "uvicorn[standard]") on purpose: fewer compiled extras.
+# - httpx (not requests) calls TMDB: it is plain Python, with no compiled parts
+#   that a Windows security policy could block.
