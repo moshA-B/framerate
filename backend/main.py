@@ -2,6 +2,7 @@
 # Replaces app.py from the Flask version.
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 
 from database import engine, Base
 import models  # noqa: F401  (imported so SQLAlchemy knows the tables before create_all)
@@ -35,5 +36,4 @@ def health():
 if __name__ == "__main__":
     # Lets you start the server with:  python main.py
     # (the usual command is:  uvicorn main:app --reload )
-    import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
