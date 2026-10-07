@@ -194,3 +194,26 @@ class AdminStats(BaseModel):
     shows_in_progress: int
     average_rating: float | None   # average of the users' own ratings
     most_watched: list[MostWatched]
+
+
+# ---------------- Google sign-in and password reset ----------------
+class GoogleLoginRequest(BaseModel):
+    credential: str            # the ID token Google gives the browser after the user picks an account
+
+
+class ForgotPasswordRequest(BaseModel):
+    email: Email
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str                 # from the link in the email
+    new_password: NewPassword
+
+
+class Message(BaseModel):
+    message: str
+
+
+class AuthConfig(BaseModel):
+    # Public settings the website needs before login.
+    google_client_id: str      # empty string = Google sign-in is not set up

@@ -1,1 +1,53 @@
-<!-- Login page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login - Framerate</title>
+  <!-- The two fonts of the design. If they cannot load, the browser uses a normal font. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700&family=Archivo+Black&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- The navbar and footer are filled in by auth.js, so every page shares them. -->
+  <header id="navbar" class="navbar"></header>
+
+  <main class="page">
+    <div class="form-card">
+      <h1>Login</h1>
+      <p id="expired" class="msg msg-info" hidden>Your session ended. Please log in again.</p>
+      <p id="error" class="msg msg-error" role="alert" hidden></p>
+      <form id="form">
+        <div class="field">
+          <label for="username">Username</label>
+          <input id="username" name="username" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required>
+        </div>
+        <button class="btn btn-primary" type="submit" id="submit">Login</button>
+      </form>
+      <!-- Shown by auth.js only if the backend has a Google client ID -->
+      <div id="google-section" hidden>
+        <p class="divider">or</p>
+        <div id="google-button"></div>
+      </div>
+      <div class="form-links">
+        <a href="forgot-password.html">Forgot your password?</a>
+        <a href="register.html">New here? Create an account</a>
+      </div>
+    </div>
+  </main>
+
+  <footer id="footer" class="footer"></footer>
+
+  <!-- Order matters: later scripts use functions from earlier ones. -->
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

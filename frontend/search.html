@@ -1,1 +1,51 @@
-<!-- Search page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Search - Framerate</title>
+  <!-- The two fonts of the design. If they cannot load, the browser uses a normal font. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700&family=Archivo+Black&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- The navbar and footer are filled in by auth.js, so every page shares them. -->
+  <header id="navbar" class="navbar"></header>
+
+  <main class="page">
+    <h1 class="page-title">Search</h1>
+
+    <form id="form" class="section" role="search">
+      <label for="q" class="muted">Movie or series name</label>
+      <div class="row">
+        <input id="q" class="search-input" type="search" maxlength="100" placeholder="e.g. Matrix" style="flex:1; min-width:220px" required>
+        <button class="btn btn-primary" type="submit">Search</button>
+      </div>
+    </form>
+
+    <!-- Filters the results that are already loaded -->
+    <div id="filters" class="toggle section" role="group" aria-label="Show" hidden>
+      <button type="button" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" data-filter="movie" aria-pressed="false">Movies</button>
+      <button type="button" data-filter="tv" aria-pressed="false">Series</button>
+    </div>
+
+    <p id="error" class="msg msg-error" role="alert" hidden></p>
+    <div id="results" class="grid"></div>
+    <div id="message"></div>
+    <div class="row section" style="justify-content:center; margin-top:32px">
+      <button id="more" class="btn btn-primary" type="button" hidden>Load more</button>
+    </div>
+  </main>
+
+  <footer id="footer" class="footer"></footer>
+
+  <!-- Order matters: later scripts use functions from earlier ones. -->
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/search.js"></script>
+</body>
+</html>

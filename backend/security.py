@@ -54,3 +54,30 @@ def create_access_token(user) -> str:
 def decode_access_token(token: str) -> dict:
     # Raises jwt.InvalidTokenError if the signature is wrong or the token expired.
     return jwt.decode(token, config.JWT_SECRET_KEY, algorithms=[config.JWT_ALGORITHM])
+
+
+# ------------------------- password-reset tokens -------------------------
+# Same idea as the login token, but with purpose="reset" so a login token can never be
+# used as a reset link (and the other way round). It also carries a short "fingerprint" of
+# the CURRENT password hash. After the password is changed the fingerprint no longer
+# matches, so each reset link works only once and we need no extra database table.
+def _fingerprint(user) -> str:
+    return hashlib.sha256(user.password_hash.encode("utf-8")).hexdigest()[:16]
+
+
+def create_reset_token(user) -> str:
+    expires = datetime.now(timezone.utc) + timedelta(minutes=config.RESET_TOKEN_EXPIRE_MINUTES)
+    payload = {"sub": str(user.id), "purpose": "reset", "pw": _fingerprint(user), "exp": expires}
+    return jwt.encode(payload, config.JWT_SECRET_KEY, algorithm=config.JWT_ALGORITHM)
+
+
+def reset_token_user_id(token: str):
+    # Returns (user_id, fingerprint) or raises jwt.InvalidTokenError.
+    payload = jwt.decode(token, config.JWT_SECRET_KEY, algorithms=[config.JWT_ALGORITHM])
+    if payload.get("purpose") != "reset":
+        raise jwt.InvalidTokenError("not a reset token")
+    return int(payload["sub"]), payload["pw"]
+
+
+def reset_token_matches(user, fingerprint: str) -> bool:
+    return hmac.compare_digest(_fingerprint(user), fingerprint)

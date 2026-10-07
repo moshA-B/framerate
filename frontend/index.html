@@ -2,11 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Framerate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home - Framerate</title>
+  <!-- The two fonts of the design. If they cannot load, the browser uses a normal font. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700&family=Archivo+Black&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- Temporary page, only to prove that nginx is serving our files. -->
-  <h1>Framerate</h1>
-  <p>The website container works. The real pages come next.</p>
+  <!-- The navbar and footer are filled in by auth.js, so every page shares them. -->
+  <header id="navbar" class="navbar"></header>
+
+  <main class="page">
+    <p id="error" class="msg msg-error" role="alert" hidden></p>
+
+    <!-- Featured title ("Tonight's pick"), filled in by home.js -->
+    <section id="hero" aria-label="Featured title"></section>
+
+    <section class="section">
+      <h2 class="section-title">Trending this week</h2>
+      <div id="trending" class="grid"></div>
+    </section>
+    <section class="section">
+      <h2 class="section-title sky">Popular movies</h2>
+      <div id="movies" class="grid"></div>
+    </section>
+    <section class="section">
+      <h2 class="section-title cobalt">Popular series</h2>
+      <div id="shows" class="grid"></div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer"></footer>
+
+  <!-- Order matters: later scripts use functions from earlier ones. -->
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/home.js"></script>
 </body>
 </html>

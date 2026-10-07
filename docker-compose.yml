@@ -50,6 +50,16 @@ services:
       MANAGER_USERNAME: ${MANAGER_USERNAME}
       MANAGER_EMAIL: ${MANAGER_EMAIL}
       MANAGER_PASSWORD: ${MANAGER_PASSWORD}
+      # Sign in with Google (optional). Empty = no Google button.
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      # Password-reset emails (optional). Empty SMTP_HOST = the link is printed in the log.
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:8080}
+      CORS_ORIGINS: ${CORS_ORIGINS:-}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM: ${SMTP_FROM:-}
     ports:
       # "your computer : container". The API is at http://localhost:8000 (docs at /docs)
       - "8000:8000"
