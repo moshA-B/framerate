@@ -34,12 +34,12 @@ services:
     # over the internal Docker network, so it is not exposed to your computer.
 
   # ---------------------------------------------------------------
-  # 2) BACKEND - Flask API (our code in ./backend)
+  # 2) BACKEND - FastAPI (our code in ./backend)
   # ---------------------------------------------------------------
   backend:
     build: ./backend            # builds the image from backend/Dockerfile
     environment:
-      # How Flask finds the database. The host name is "db", which is the
+      # How the backend finds the database. The host name is "db", which is the
       # service name above. Docker's internal network resolves it for us.
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
       # Secret used to sign login tokens (JWT).
@@ -47,8 +47,8 @@ services:
       # Your TMDB key. It stays here on the server and never reaches the browser.
       TMDB_API_KEY: ${TMDB_API_KEY}
     ports:
-      # "your computer : container". The API is at http://localhost:5000
-      - "5000:5000"
+      # "your computer : container". The API is at http://localhost:8000 (docs at /docs)
+      - "8000:8000"
     depends_on:
       db:
         condition: service_healthy   # start only after Postgres is ready
@@ -65,8 +65,8 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
-    # Note: the browser calls the backend directly at http://localhost:5000,
-    # so Flask will need CORS enabled (a one-line setup in app.py).
+    # Note: the browser calls the backend directly at http://localhost:8000,
+    # which is why CORS is enabled in backend/main.py.
 
 # Named volumes used above. Docker creates and manages them.
 volumes:

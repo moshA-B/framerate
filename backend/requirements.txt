@@ -1,7 +1,11 @@
-Flask
-Flask-SQLAlchemy
-Flask-JWT-Extended
-Flask-CORS
+fastapi
+uvicorn
+sqlalchemy<2.1
 psycopg2-binary
 requests
 python-dotenv
+PyJWT
+# Notes:
+# - sqlalchemy is kept below 2.1: version 2.1 loads compiled files that some
+#   Windows security policies block. Version 2.0 falls back to plain Python.
+# - plain "uvicorn" (not "uvicorn[standard]") on purpose: fewer compiled extras.
