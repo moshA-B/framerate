@@ -40,7 +40,7 @@ if (initPage("admin", { manager: true })) {
   // ------------------------- numbers and lists -------------------------
   function titleSection(gridId, emptyId, items, chip, emptyTitle, emptyText) {
     document.getElementById(gridId).replaceChildren(...items.map((t) => titleCard(t, chip(t))));
-    document.getElementById(emptyId).replaceChildren(items.length === 0 ? emptyState(emptyTitle, emptyText) : "");
+    document.getElementById(emptyId).replaceChildren(items.length === 0 ? emptyState(emptyTitle, emptyText, null) : "");
   }
 
   function showStats(stats) {

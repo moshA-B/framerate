@@ -494,3 +494,66 @@ tr:last-child td { border-bottom: 0; }
   .review .btn { grid-column: 1 / -1; justify-self: start; }
   .bar-labels span { font-size: 9px; }
 }
+
+/* ---------- 19. Compact sizing ----------
+   Everything above was drawn a little too big. These rules come last, so they win, and make the
+   whole site about 15% smaller. Rules that change the LAYOUT are only for screens wider than
+   720px, so the phone layout from section 14 stays exactly as it was. */
+body { font-size: 15px; }
+.page-title { font-size: clamp(30px, 4vw, 44px); margin-bottom: 14px; }
+.section { margin-bottom: 30px; }
+.section-title { font-size: 22px; padding: 4px 14px; margin-bottom: 14px; border-width: 2.5px; box-shadow: 2px 2px 0 var(--ink); }
+.logo { font-size: 20px; padding: 1px 10px; box-shadow: 2px 2px 0 var(--ink); }
+.nav-links a { padding: 3px 12px; min-height: 34px; font-size: 14px; }
+.btn { font-size: 14px; min-height: 36px; padding: 4px 14px; box-shadow: 3px 3px 0 var(--ink); }
+.btn-small { min-height: 30px; padding: 2px 10px; font-size: 13px; }
+.toggle button { font-size: 14px; min-height: 34px; padding: 3px 16px; box-shadow: 2px 2px 0 var(--ink); }
+.chip, .pill { font-size: 13px; }
+input, select, textarea { font-size: 15px; min-height: 38px; }
+.search-input { font-size: 17px; min-height: 46px; box-shadow: 4px 4px 0 var(--ink); }
+.card { padding: 7px; border-radius: 12px; box-shadow: 3px 3px 0 var(--ink); }
+.card-title { font-size: 13.5px; margin-top: 7px; }
+.card-year { font-size: 12.5px; }
+.panel { padding: 16px; box-shadow: 4px 4px 0 var(--ink); }
+.panel h2 { font-size: 20px; margin-bottom: 10px; }
+.hero h1 { font-size: clamp(24px, 3vw, 38px); margin: 8px 0; }
+.hero p { font-size: 14.5px; max-width: 62ch; margin: 6px 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.hero-meta { margin: 8px 0; }
+.details-top h1 { font-size: clamp(26px, 3.4vw, 42px); margin-bottom: 8px; }
+.stat { padding: 10px 14px; box-shadow: 4px 4px 0 var(--ink); }
+.stat b { font-size: 30px; }
+.stat span { font-size: 13px; }
+.chart { padding: 12px 16px 14px; box-shadow: 4px 4px 0 var(--ink); }
+.chart figcaption { font-size: 16px; margin-bottom: 10px; }
+.bars { height: 140px; }
+.reel-strip { padding: 12px 18px; margin-bottom: 28px; box-shadow: 4px 4px 0 var(--ink); }
+.reel-strip h2 { font-size: 22px; }
+.reel-strip .btn { font-size: 15px; }
+.scenario { font-size: clamp(20px, 2.6vw, 28px); padding: 22px; }
+.stage-title { font-size: 22px; margin: 2px 0; }
+.stage .card .score { width: 40px; height: 40px; font-size: 14px; top: -10px; right: -10px; }
+.answer-row { gap: 8px; margin-top: 16px; }
+.answer-row .btn { min-width: 110px; font-size: 14px; }
+.intro-card { padding: 20px; }
+.intro-card h2 { font-size: 26px; }
+.pick h2 { font-size: clamp(26px, 3.4vw, 40px); }
+.empty h2 { font-size: 24px; }
+.footer { font-size: 12px; }
+
+@media (min-width: 721px) {
+  .page { max-width: 1120px; padding: 28px 32px; }
+  .navbar { padding: 8px 32px; gap: 8px 18px; }
+  .footer { padding: 14px 32px; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(138px, 1fr)); gap: 16px; }
+  .hero { grid-template-columns: 1fr 150px; gap: 24px; padding: 20px 26px; margin-bottom: 34px; box-shadow: 5px 5px 0 var(--ink); }
+  .details-top { grid-template-columns: 210px 1fr; gap: 26px; }
+  .stats { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 14px; margin-bottom: 28px; }
+  .taste-layout { grid-template-columns: 1fr 270px; gap: 24px; }
+  /* Refine my taste: poster on the left, text on the right, so the 3 buttons fit on screen without scrolling. */
+  .stage:not(.wide) { max-width: 500px; }
+  .stage:not(.wide) .card { display: grid; grid-template-columns: 165px 1fr; column-gap: 16px; align-content: start; padding: 10px; }
+  .stage:not(.wide) .card .poster { grid-row: 1 / 6; grid-column: 1; }
+  .stage:not(.wide) .card > *:not(.poster):not(.score) { grid-column: 2; }
+  .stage:not(.wide) .card .muted { font-size: 13.5px; margin: 6px 0 0; }
+  .pick { grid-template-columns: 190px 1fr; gap: 24px; }
+}

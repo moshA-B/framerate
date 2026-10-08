@@ -13,7 +13,7 @@ if (initPage("history", { login: true })) {
 
   // A card + (optional review) + Edit and Remove buttons.
   function entry(item, chip, deleteUrl, removeLabel, onGone, review) {
-    const wrapper = el("div", {});
+    let wrapper;   // created below, after the Remove button exists
     const remove = el("button", { className: "btn btn-small", type: "button", "aria-label": `${removeLabel}: ${item.title}` }, removeLabel);
     remove.addEventListener("click", async () => {
       remove.disabled = true;
@@ -27,7 +27,8 @@ if (initPage("history", { login: true })) {
         remove.disabled = false;
       }
     });
-    wrapper.append(
+    // Built with el(), which skips a missing review. (wrapper.append(null) would print the word "null".)
+    wrapper = el("div", {},
       titleCard(item, chip),
       review ? el("p", { className: "review" }, `"${review}"`) : null,
       el("div", { className: "row card-actions" },

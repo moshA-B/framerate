@@ -71,12 +71,13 @@ function showSkeletons(grid, count = 12) {
   grid.replaceChildren(...Array.from({ length: count }, () => el("div", { className: "skeleton" })));
 }
 
-// "Nothing here yet" card with a button.
+// "Nothing here yet" card with a button. Pass null as buttonText for a card without a button
+// (the admin pages use that: there is nothing for a manager to "go and watch").
 function emptyState(title, text, buttonText = "Find something to watch", href = "search.html") {
   return el("div", { className: "empty" },
     el("h2", {}, title),
     el("p", {}, text),
-    el("a", { className: "btn btn-primary", href }, buttonText),
+    buttonText ? el("a", { className: "btn btn-primary", href }, buttonText) : null,
   );
 }
 
