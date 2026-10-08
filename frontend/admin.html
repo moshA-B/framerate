@@ -24,9 +24,44 @@
     </section>
 
     <section class="section">
-      <h2 class="section-title sky">Most watched</h2>
+      <h2 class="section-title sky">Trends</h2>
+      <div class="chart-grid">
+        <figure class="chart"><figcaption>New users, last 14 days</figcaption><div id="chart-signups"></div></figure>
+        <figure class="chart"><figcaption>How people rate (1 to 10)</figcaption><div id="chart-ratings"></div></figure>
+        <figure class="chart"><figcaption>Popular genres</figcaption><div id="chart-genres"></div></figure>
+        <figure class="chart"><figcaption>Most active users</figcaption><div id="chart-users"></div></figure>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Most watched</h2>
       <div id="top" class="grid"></div>
       <div id="top-empty"></div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title sky">Most wishlisted</h2>
+      <div id="wished" class="grid"></div>
+      <div id="wished-empty"></div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title cobalt">Best rated by the community</h2>
+      <p class="muted">Average of all users' ratings. A title needs at least 2 ratings.</p>
+      <div id="best" class="grid"></div>
+      <div id="best-empty"></div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Review moderation</h2>
+      <form id="review-search" class="row" role="search">
+        <input id="review-q" class="search-input" type="search" maxlength="100" aria-label="Search reviews"
+               placeholder="Search words in reviews" style="flex:1; min-width:220px">
+        <button class="btn" type="submit">Search</button>
+      </form>
+      <p id="review-count" class="muted" aria-live="polite"></p>
+      <div id="reviews" class="reviews"></div>
+      <button id="reviews-more" class="btn" type="button" hidden>Load more</button>
     </section>
 
     <section class="section">

@@ -185,6 +185,35 @@ class MostWatched(TitleCard):
     watch_count: int
 
 
+class MostWishlisted(TitleCard):
+    wish_count: int
+
+
+class BestRated(TitleCard):
+    avg_rating: float          # the average of the users' own ratings (1-10)
+    rating_count: int
+
+
+class DayCount(BaseModel):
+    date: str                  # "2026-10-08"
+    count: int
+
+
+class RatingCount(BaseModel):
+    rating: int                # 1-10
+    count: int
+
+
+class ActiveUser(BaseModel):
+    username: str
+    items: int                 # watched + wishlist + progress rows
+
+
+class GenreCount(BaseModel):
+    name: str
+    count: int
+
+
 class AdminStats(BaseModel):
     users: int
     managers: int
@@ -194,6 +223,29 @@ class AdminStats(BaseModel):
     shows_in_progress: int
     average_rating: float | None   # average of the users' own ratings
     most_watched: list[MostWatched]
+    most_wishlisted: list[MostWishlisted]
+    best_rated: list[BestRated]
+    signups: list[DayCount]
+    rating_counts: list[RatingCount]
+    active_users: list[ActiveUser]
+    popular_genres: list[GenreCount]
+
+
+class ReviewItem(BaseModel):
+    # One written review, for the moderation list. `id` is the id of the "watched" row.
+    id: int
+    username: str
+    rating: int | None
+    review: str
+    watched_at: datetime
+    title: TitleCard
+
+
+class ReviewPage(BaseModel):
+    page: int
+    total: int
+    total_pages: int
+    results: list[ReviewItem]
 
 
 # ---------------- Google sign-in and password reset ----------------
