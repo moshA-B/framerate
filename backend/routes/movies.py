@@ -7,7 +7,7 @@ from typing import Literal
 
 from fastapi import APIRouter, HTTPException, Path, Query
 
-from schemas import Episode, TitleDetails, TitleList
+from schemas import Episode, Genre, SuggestItem, TitleDetails, TitleList
 from services import tmdb
 
 router = APIRouter(prefix="/api/titles", tags=["titles"])
@@ -30,8 +30,31 @@ def popular(media_type: MediaType = "movie", page: int = Query(1, ge=1, le=500))
 
 
 @router.get("/trending", response_model=TitleList)
-def trending(page: int = Query(1, ge=1, le=500)):
-    return tmdb.trending(page)
+def trending(media_type: MediaType | None = None, page: int = Query(1, ge=1, le=500)):
+    # No media_type = movies and series mixed.
+    return tmdb.trending(page, media_type)
+
+
+@router.get("/genres", response_model=list[Genre])
+def genres(media_type: MediaType = "movie"):
+    # The genre tabs on the home page.
+    return tmdb.genres(media_type)
+
+
+@router.get("/discover", response_model=TitleList)
+def discover(media_type: MediaType = "movie", genre: int | None = Query(None, gt=0),
+             page: int = Query(1, ge=1, le=500)):
+    # Titles of one genre, most popular first.
+    return tmdb.discover(media_type, [genre] if genre else None, page)
+
+
+@router.get("/suggest", response_model=list[SuggestItem])
+def suggest(q: str = Query(min_length=1, max_length=100)):
+    # The dropdown under the search box while the user types.
+    text = q.strip()
+    if not text:
+        return []
+    return tmdb.suggest(text)
 
 
 @router.get("/{media_type}/{tmdb_id}", response_model=TitleDetails)

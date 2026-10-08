@@ -36,6 +36,7 @@ class User(Base):
     wishlist = relationship("Wishlist", cascade="all, delete-orphan")
     watched = relationship("Watched", cascade="all, delete-orphan")
     progress = relationship("Progress", cascade="all, delete-orphan")
+    taste = relationship("TasteSignal", cascade="all, delete-orphan")
 
 
 # The three tables below store only the TMDB id, never the title or poster.
@@ -86,3 +87,18 @@ class Progress(Base):
         default=lambda: datetime.now(timezone.utc),
         onupdate=lambda: datetime.now(timezone.utc),  # refreshed automatically on every change
     )
+
+
+class TasteSignal(Base):
+    # One thumbs-up / thumbs-down / skip from the "Refine my taste" page.
+    # The recommender reads these (together with ratings and wishlist) to learn the user's taste.
+    __tablename__ = "taste_signals"
+    __table_args__ = (UniqueConstraint("user_id", "tmdb_id", "media_type", name="uq_taste_item"),)
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    tmdb_id = Column(Integer, nullable=False)
+    media_type = Column(String(5), nullable=False)  # "movie" or "tv"
+    # 1 = liked it, -1 = disliked it, 0 = skipped ("have not seen it": no opinion, but do not ask again)
+    score = Column(Integer, nullable=False)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))

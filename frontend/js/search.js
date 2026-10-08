@@ -1,7 +1,9 @@
 // search.js - search TMDB and show the results as cards.
+// While typing, a dropdown suggests titles that start with the letters typed so far.
 if (initPage("search")) {
   const form = document.getElementById("form");
   const input = document.getElementById("q");
+  const list = document.getElementById("suggest-list");
   const grid = document.getElementById("results");
   const message = document.getElementById("message");
   const errorBox = document.getElementById("error");
@@ -15,6 +17,7 @@ if (initPage("search")) {
   let results = [];      // everything loaded so far
   let filter = "all";    // "all", "movie" or "tv"
 
+  // ------------------------- the results grid -------------------------
   // Draws the loaded results, applying the Movies/Series filter.
   function render() {
     const shown = results.filter((item) => filter === "all" || item.media_type === filter);
@@ -64,10 +67,86 @@ if (initPage("search")) {
     moreButton.disabled = false;
   }
 
+  function search(text) {
+    query = text.trim();
+    closeList();
+    if (query) load(true);
+  }
+
+  // ------------------------- the dropdown -------------------------
+  let items = [];        // the suggestions on screen
+  let active = -1;       // which one the arrow keys are on (-1 = none)
+  let timer = null;      // waits for a short pause in typing
+  let lastAsked = 0;     // numbers the requests, so a slow old answer is ignored
+
+  function closeList() {
+    list.hidden = true;
+    list.replaceChildren();
+    items = [];
+    active = -1;
+    input.setAttribute("aria-expanded", "false");
+    input.removeAttribute("aria-activedescendant");
+  }
+
+  function highlight(index) {
+    active = index;
+    [...list.children].forEach((li, i) => li.setAttribute("aria-selected", String(i === index)));
+    if (index >= 0) input.setAttribute("aria-activedescendant", `opt-${index}`);
+    else input.removeAttribute("aria-activedescendant");
+  }
+
+  function showList(suggestions) {
+    items = suggestions;
+    if (items.length === 0) { closeList(); return; }
+    list.replaceChildren(...items.map((item, i) =>
+      el("li", { id: `opt-${i}`, role: "option", "aria-selected": "false" },
+        el("a", { href: `details.html?type=${item.media_type}&id=${item.tmdb_id}` },
+          item.poster_url ? el("img", { src: item.poster_url, alt: "" }) : el("span", { className: "thumb" }),
+          el("span", { className: "name" }, item.title, item.year ? ` (${item.year})` : ""),
+          el("span", { className: "chip kind" }, item.media_type === "tv" ? "Series" : "Movie")))));
+    list.hidden = false;
+    input.setAttribute("aria-expanded", "true");
+    active = -1;
+  }
+
+  async function suggest() {
+    const text = input.value.trim();
+    if (text.length < 2) { closeList(); return; }   // one letter would match everything
+    const mine = ++lastAsked;
+    try {
+      const data = await api(`/api/titles/suggest?q=${encodeURIComponent(text)}`);
+      if (mine === lastAsked && input.value.trim() === text) showList(data);
+    } catch (error) {
+      closeList();   // the dropdown is only a help, so we do not show errors for it
+    }
+  }
+
+  input.addEventListener("input", () => {
+    clearTimeout(timer);
+    timer = setTimeout(suggest, 250);   // wait until the user pauses, so we do not send a request per key
+  });
+
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowDown" && items.length) { event.preventDefault(); highlight((active + 1) % items.length); }
+    else if (event.key === "ArrowUp" && items.length) { event.preventDefault(); highlight((active - 1 + items.length) % items.length); }
+    else if (event.key === "Escape") closeList();
+    else if (event.key === "Enter" && active >= 0) {
+      event.preventDefault();                          // open the highlighted title instead of searching
+      const item = items[active];
+      window.location.href = `details.html?type=${item.media_type}&id=${item.tmdb_id}`;
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!form.contains(event.target)) closeList();     // click anywhere else closes it
+  });
+
+  // ------------------------- wiring -------------------------
   form.addEventListener("submit", (event) => {
     event.preventDefault();
-    query = input.value.trim();
-    if (query) load(true);
+    clearTimeout(timer);
+    lastAsked += 1;                                    // ignore any suggestion still on its way
+    search(input.value);
   });
 
   moreButton.addEventListener("click", () => {
@@ -83,7 +162,6 @@ if (initPage("search")) {
   const first = new URLSearchParams(window.location.search).get("q");
   if (first) {
     input.value = first;
-    query = first.trim();
-    if (query) load(true);
+    search(first);
   }
 }

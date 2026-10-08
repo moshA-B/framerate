@@ -17,11 +17,16 @@
   <main class="page">
     <h1 class="page-title">Search</h1>
 
-    <form id="form" class="section" role="search">
+    <form id="form" class="section" role="search" autocomplete="off">
       <label for="q" class="muted">Movie or series name</label>
-      <div class="row">
-        <input id="q" class="search-input" type="search" maxlength="100" placeholder="e.g. Matrix" style="flex:1; min-width:220px" required>
-        <button class="btn btn-primary" type="submit">Search</button>
+      <div class="row" style="align-items:flex-start">
+        <!-- The dropdown (list of suggestions) is filled in by search.js while you type -->
+        <div class="combo">
+          <input id="q" class="search-input" type="search" maxlength="100" placeholder="e.g. Matrix" required
+                 role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="suggest-list">
+          <ul id="suggest-list" class="suggest" role="listbox" aria-label="Suggestions" hidden></ul>
+        </div>
+        <button class="btn btn-primary" type="submit" style="min-height:60px">Search</button>
       </div>
     </form>
 

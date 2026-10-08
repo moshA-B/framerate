@@ -47,3 +47,19 @@ def require_manager(user: User = Depends(get_current_user)) -> User:
     if user.role != "manager":
         raise HTTPException(status_code=403, detail="Managers only")
     return user
+
+
+def get_optional_user(
+    credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),
+    db: Session = Depends(get_db),
+) -> User | None:
+    # For pages that work for everyone but do more for logged-in users (the Reel quiz).
+    # No token or a bad token is NOT an error here: the visitor is simply treated as logged out.
+    if credentials is None:
+        return None
+    try:
+        payload = decode_access_token(credentials.credentials)
+        return db.get(User, int(payload["sub"]))
+    except (jwt.InvalidTokenError, KeyError, ValueError):
+        return None
+

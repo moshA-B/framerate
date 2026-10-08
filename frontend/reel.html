@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Home - Framerate</title>
+  <title>The Reel - Framerate</title>
   <!-- The two fonts of the design. If they cannot load, the browser uses a normal font. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,27 +15,9 @@
   <header id="navbar" class="navbar"></header>
 
   <main class="page">
+    <h1 class="page-title">The Reel</h1>
     <p id="error" class="msg msg-error" role="alert" hidden></p>
-
-    <!-- Featured title ("Tonight's pick"), filled in by home.js. Only shown on the "All" tab. -->
-    <section id="hero" aria-label="Featured title"></section>
-
-    <!-- The Reel: for when you cannot decide -->
-    <section class="reel-strip" aria-label="The Reel">
-      <div>
-        <h2>Can't decide what to watch?</h2>
-        <p>Answer a few quick scenarios and we will pick a movie for tonight.</p>
-      </div>
-      <a class="btn btn-accent" href="reel.html">Roll the reel</a>
-    </section>
-
-    <!-- Movies / Series switch and genre tabs, built by home.js -->
-    <div class="controls">
-      <div id="type-toggle" class="toggle" role="group" aria-label="Show movies or series"></div>
-      <div id="genre-pills" class="toggle wrap" role="group" aria-label="Genres"></div>
-    </div>
-
-    <div id="content"></div>
+    <div id="stage" class="stage wide"></div>
   </main>
 
   <footer id="footer" class="footer"></footer>
@@ -44,6 +26,6 @@
   <script src="js/api.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/home.js"></script>
+  <script src="js/reel.js"></script>
 </body>
 </html>

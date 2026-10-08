@@ -144,13 +144,19 @@ All paths start with `/api`. "Login" = needs a valid token. Interactive docs: `h
 | `POST /auth/reset-password` | public (token) | Sets a new password using the emailed token. |
 | `GET /titles/search?q=&page=` | public | Search movies and series. |
 | `GET /titles/popular?media_type=` | public | Popular movies or series. |
-| `GET /titles/trending` | public | Trending this week. |
+| `GET /titles/trending?media_type=` | public | Trending this week (movies, series or both). |
+| `GET /titles/genres?media_type=` | public | Genre list for the home-page tabs. |
+| `GET /titles/discover?media_type=&genre=&page=` | public | Titles of one genre. |
+| `GET /titles/suggest?q=` | public | Search-bar dropdown: titles starting with the typed letters. |
 | `GET /titles/{movie\|tv}/{id}` | public | Details, cast, where to watch. |
 | `GET /titles/tv/{id}/season/{n}` | public | Episodes of a season. |
 | `GET/POST /me/wishlist`, `DELETE /me/wishlist/{type}/{id}` | login | The user's wishlist. |
 | `GET /me/watched`, `PUT/DELETE /me/watched/{type}/{id}` | login | Watched list with rating and review. |
 | `GET /me/progress`, `PUT/DELETE /me/progress/{id}` | login | Episode progress for series. |
 | `GET /me/status/{type}/{id}` | login | Wishlist/watched/progress state of one title. |
+| `GET /me/taste/next`, `POST /me/taste`, `GET /me/taste/profile`, `DELETE /me/taste` | login | "Refine my taste": get titles to judge, save a thumb (1 / -1 / 0), see the taste profile, reset the thumbs. |
+| `GET /me/for-you?media_type=` | login | The personalised "For you" rows. |
+| `POST /reel/next` | public (better with login) | The Reel quiz: send the answers so far, get the next question or the picks. |
 | `GET /admin/users` | manager | All users. |
 | `DELETE /admin/users/{id}` | manager | Delete a user (not yourself). |
 | `GET /admin/stats` | manager | Counts, average rating, top 5 most watched. |
@@ -253,6 +259,33 @@ breaking the whole list. TMDB's required attribution appears in the footer of ev
   Settings come from `.env` through `${...}` variables.
 - Run: `docker compose up --build`. Site on port 8080, API on 8000.
 
+## 12a. How the recommender works
+
+No machine-learning library: it is plain, readable Python in `backend/services/recommender.py` (pure logic) and `engine.py` (builds the answers). Only TMDB ids are stored; titles and genres are fetched live.
+
+**1. Signals.** Everything the user does becomes a number between -1 and +1:
+
+| Action | Weight |
+|---|---|
+| Rating 1-10 | (rating - 5.5) / 4.5 |
+| Thumb up / thumb down (Refine my taste) | +1 / -1 |
+| Skip ("haven't seen it") | 0 (not asked again, but not excluded) |
+| Watched or on the wishlist | +0.3 |
+| Series progress | +0.4 |
+
+**2. Taste profile.** Each signal's weight is shared across the title's genres, summed per genre, and scaled so the strongest genre is +1 or -1. Series genres are mapped onto the 19 movie genres so both types share one profile.
+
+**3. Mood axes.** Four axes describe a mood: dark-light, slow-fast, escapist-thoughtful, fantastical-realistic. Every genre has a fixed place on them (`GENRE_TRAITS`).
+
+**4. The Reel quiz.** `data/quiz_bank.json` holds 64 scenarios ("A rainy night, a slow mystery unfolds..."), each with mood traits, genre weights and a theme. 8 questions are asked; "Show me my pick now" appears after 4. The first 3 are broad. Every next question prefers the axis we know least about, leans toward liked genres, avoids disliked ones and never repeats a theme. The server keeps no state: the browser sends all answers each time.
+
+**5. Scoring a movie.** `score = w1*mood + w2*profile + w3*quality + w4*recommended`
+Reel: mood 0.40, profile 0.30, quality 0.20, recommended 0.10. For you: profile 0.50, quality 0.25, recommended 0.25. "Quality" is the TMDB rating, trusted more when there are many votes. "Recommended" is a bonus when TMDB recommends the title from something the user liked. Each pick comes with up to 3 plain-language reasons (`explain()`).
+
+**6. Honest limits.** The weights are hand-tuned, not learned; with fewer than 3 signals the For you tab asks the user to refine their taste first.
+
+**Unit tests:** `cd backend && python -m unittest discover -s tests` (35 tests, no network needed: a fake TMDB is used).
+
 ## 12. Testing
 
 Manual test checklist (tick each one and add a screenshot):
@@ -267,6 +300,12 @@ Manual test checklist (tick each one and add a screenshot):
 - [ ] Admin: statistics, delete a user; deleting yourself is refused.
 - [ ] Forgot password: the link appears in the log (or email); the new password works; the same link a second time is refused.
 - [ ] Sign in with Google (if configured).
+- [ ] Home: genre pills and the Movies / Series switch change the titles.
+- [ ] Search: typing 2+ letters shows a dropdown of titles starting with them.
+- [ ] Refine my taste: thumbs up / down / skip (also with the arrow keys); "Your taste so far" updates.
+- [ ] For you tab: asks to refine your taste at first, shows rows after 3+ answers.
+- [ ] The Reel as a visitor and as a logged-in user; "Throw me another" shows the next pick.
+- [ ] `python -m unittest discover -s tests` in `backend` passes.
 - [ ] Restart with `docker compose up`: data is still there.
 
 Interactive API testing is available at `/docs`. The frontend flows were also tested with an automated headless-browser script against a mock API.

@@ -217,3 +217,83 @@ class Message(BaseModel):
 class AuthConfig(BaseModel):
     # Public settings the website needs before login.
     google_client_id: str      # empty string = Google sign-in is not set up
+
+
+# ---------------- genres, autocomplete ----------------
+class Genre(BaseModel):
+    id: int
+    name: str
+
+
+class SuggestItem(BaseModel):
+    # One line in the search dropdown.
+    tmdb_id: int
+    media_type: str
+    title: str
+    year: str
+    poster_url: str | None
+
+
+# ---------------- recommendations ----------------
+class TasteIn(BaseModel):
+    # A thumb on the "Refine my taste" page: 1 = like, -1 = dislike, 0 = skip.
+    tmdb_id: int = Field(gt=0)
+    media_type: Literal["movie", "tv"]
+    score: Literal[-1, 0, 1]
+
+
+class TasteCount(BaseModel):
+    signals: int               # how many thumbs the user has given so far
+
+
+class GenreScore(BaseModel):
+    name: str
+    score: int                 # 0-100
+
+
+class TasteProfile(BaseModel):
+    signals: int               # how many titles the taste is based on
+    top: list[GenreScore]      # genres the user likes most
+    low: list[GenreScore]      # genres the user likes least
+
+
+class ForYouRow(BaseModel):
+    title: str                 # e.g. "Because you liked Arrival"
+    items: list[TitleCard]
+
+
+class ForYouOut(BaseModel):
+    needs_more: bool           # True = not enough history yet, ask the user to rate some titles
+    signals: int
+    rows: list[ForYouRow]
+
+
+class ReelAnswer(BaseModel):
+    id: str = Field(max_length=10)       # which scenario
+    answer: Literal[-1, 0, 1]            # dislike, meh, like
+
+
+class ReelRequest(BaseModel):
+    # Everything the server needs, because it remembers nothing between questions.
+    answers: list[ReelAnswer] = Field(default_factory=list, max_length=8)
+    seed: int = Field(0, ge=0, le=2_000_000_000)           # makes the question order different each time
+    lean: list[int] = Field(default_factory=list, max_length=3)   # genres the user leans toward today
+    finish: bool = False                                    # "show me my picks now"
+
+
+class ReelQuestion(BaseModel):
+    id: str
+    text: str
+
+
+class ReelPick(TitleCard):
+    reasons: list[str]         # why this movie fits (1-3 short sentences)
+
+
+class ReelOut(BaseModel):
+    done: bool                 # False: show `question`. True: show `picks`.
+    asked: int                 # questions answered so far
+    total: int                 # questions in a full quiz
+    question: ReelQuestion | None
+    picks: list[ReelPick]      # best first, the page shows them one at a time
+

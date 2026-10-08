@@ -28,9 +28,11 @@ function renderNavbar(active, user) {
   const links = [
     ["home", "index.html", "Home"],
     ["search", "search.html", "Search"],
+    ["reel", "reel.html", "The Reel"],
     ["wishlist", "wishlist.html", "Wishlist"],
     ["history", "history.html", "History"],
   ];
+  if (user) links.push(["taste", "taste.html", "My taste"]);
   if (user && user.role === "manager") links.push(["admin", "admin.html", "Admin"]);
 
   const nav = el("nav", { className: "nav-links", "aria-label": "Main" },
