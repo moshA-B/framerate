@@ -8,7 +8,7 @@ from sqlalchemy.exc import IntegrityError
 import config
 from database import engine, Base, SessionLocal
 from models import User  # importing the models also tells SQLAlchemy which tables exist
-from routes import auth, admin, lists, movies, recommend, taste
+from routes import auth, admin, lists, movies
 from security import hash_password
 
 # Create any missing tables the first time the app starts.
@@ -63,8 +63,6 @@ app.include_router(auth.router)
 app.include_router(admin.router)
 app.include_router(movies.router)
 app.include_router(lists.router)
-app.include_router(taste.router)
-app.include_router(recommend.router)
 
 
 # A tiny test endpoint: open /api/health to see that the server is alive.

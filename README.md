@@ -51,14 +51,6 @@ Without SMTP settings nothing is emailed: the reset link is printed in the backe
 For real emails with Gmail, turn on 2-step verification, create an "app password", and set
 `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=587`, `SMTP_USER=you@gmail.com`, `SMTP_PASSWORD=<app password>`.
 
-## New: recommendations
-- **Home** has a Movies / Series switch and genre tabs, plus a **For you** tab.
-- **The Reel** (navbar) is a short mood quiz that picks a movie.
-- **My taste** lets you give titles a thumbs up, thumbs down or skip.
-- The search bar shows suggestions as you type.
-
-Run the unit tests (no Docker, no internet needed): `cd backend` then `python -m unittest discover -s tests`.
-
 ## Run the backend without Docker (development)
 
 ```

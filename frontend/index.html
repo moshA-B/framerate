@@ -17,25 +17,21 @@
   <main class="page">
     <p id="error" class="msg msg-error" role="alert" hidden></p>
 
-    <!-- Featured title ("Tonight's pick"), filled in by home.js. Only shown on the "All" tab. -->
+    <!-- Featured title ("Tonight's pick"), filled in by home.js -->
     <section id="hero" aria-label="Featured title"></section>
 
-    <!-- The Reel: for when you cannot decide -->
-    <section class="reel-strip" aria-label="The Reel">
-      <div>
-        <h2>Can't decide what to watch?</h2>
-        <p>Answer a few quick scenarios and we will pick a movie for tonight.</p>
-      </div>
-      <a class="btn btn-accent" href="reel.html">Roll the reel</a>
+    <section class="section">
+      <h2 class="section-title">Trending this week</h2>
+      <div id="trending" class="grid"></div>
     </section>
-
-    <!-- Movies / Series switch and genre tabs, built by home.js -->
-    <div class="controls">
-      <div id="type-toggle" class="toggle" role="group" aria-label="Show movies or series"></div>
-      <div id="genre-pills" class="toggle wrap" role="group" aria-label="Genres"></div>
-    </div>
-
-    <div id="content"></div>
+    <section class="section">
+      <h2 class="section-title sky">Popular movies</h2>
+      <div id="movies" class="grid"></div>
+    </section>
+    <section class="section">
+      <h2 class="section-title cobalt">Popular series</h2>
+      <div id="shows" class="grid"></div>
+    </section>
   </main>
 
   <footer id="footer" class="footer"></footer>
