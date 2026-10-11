@@ -331,6 +331,7 @@ class ReelRequest(BaseModel):
     seed: int = Field(0, ge=0, le=2_000_000_000)           # makes the question order different each time
     lean: list[int] = Field(default_factory=list, max_length=3)   # genres the user leans toward today
     finish: bool = False                                    # "show me my picks now"
+    avoid: list[str] = Field(default_factory=list, max_length=40)   # scenarios seen in earlier quizzes (browser remembers)
 
 
 class ReelQuestion(BaseModel):

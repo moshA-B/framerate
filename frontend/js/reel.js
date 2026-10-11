@@ -14,18 +14,34 @@ if (initPage("reel")) {
   let busy = false;
   let genres = [];
 
+  // The browser remembers which scenarios it showed lately, so the next quiz looks different.
+  // (localStorage can be blocked, so every access is wrapped in try/catch.)
+  const SEEN_KEY = "framerate_reel_seen";
+  const SEEN_MAX = 32;
+  function recentScenarios() {
+    try { return JSON.parse(localStorage.getItem(SEEN_KEY)) || []; } catch (e) { return []; }
+  }
+  function rememberScenario(id) {
+    try {
+      const list = recentScenarios().filter((x) => x !== id);
+      list.push(id);
+      localStorage.setItem(SEEN_KEY, JSON.stringify(list.slice(-SEEN_MAX)));
+    } catch (e) { /* not important */ }
+  }
+
   // ------------------------- talking to the server -------------------------
   async function ask(finish = false) {
     if (busy) return;
     busy = true;
     showError(errorBox, "");
     try {
-      state = await api("/api/reel/next", { method: "POST", body: { answers, seed, lean, finish } });
+      state = await api("/api/reel/next", { method: "POST", body: { answers, seed, lean, finish, avoid: recentScenarios() } });
       if (state.done) {
         picks = state.picks;
         pickIndex = 0;
         drawResult();
       } else {
+        rememberScenario(state.question.id);
         drawQuestion();
       }
     } catch (error) {

@@ -868,5 +868,1623 @@
   "genres": {
    "10751": 1
   }
+ },
+ {
+  "id": "q65",
+  "text": "A cult leader, a remote compound, and one person who starts to see through it.",
+  "theme": "cult",
+  "traits": {
+   "tone": -0.9,
+   "depth": 0.4,
+   "realism": 0.4
+  },
+  "genres": {
+   "53": 0.8,
+   "18": 0.5
+  }
+ },
+ {
+  "id": "q66",
+  "text": "A serial killer story told from the point of view of the detective who cannot catch him.",
+  "theme": "killer",
+  "traits": {
+   "tone": -1,
+   "pace": 0.2
+  },
+  "genres": {
+   "80": 0.8,
+   "53": 0.8
+  }
+ },
+ {
+  "id": "q67",
+  "text": "A lighthouse, a storm, and two keepers slowly going mad.",
+  "theme": "lighthouse",
+  "traits": {
+   "tone": -0.9,
+   "pace": -0.7,
+   "realism": -0.2
+  },
+  "genres": {
+   "27": 0.6,
+   "53": 0.4,
+   "18": 0.4
+  }
+ },
+ {
+  "id": "q68",
+  "text": "A prison drama about men who have nothing left to lose.",
+  "theme": "prison",
+  "traits": {
+   "tone": -0.7,
+   "realism": 0.9,
+   "depth": 0.4
+  },
+  "genres": {
+   "18": 1,
+   "80": 0.5
+  }
+ },
+ {
+  "id": "q69",
+  "text": "A ghost ship drifting in the fog, and a crew that should not have gone aboard.",
+  "theme": "ghostship",
+  "traits": {
+   "tone": -0.9,
+   "realism": -0.6
+  },
+  "genres": {
+   "27": 1,
+   "9648": 0.3
+  }
+ },
+ {
+  "id": "q70",
+  "text": "A revenge story where the hero becomes worse than the people he hunts.",
+  "theme": "revenge",
+  "traits": {
+   "tone": -0.8,
+   "pace": 0.4
+  },
+  "genres": {
+   "28": 0.6,
+   "53": 0.6,
+   "18": 0.3
+  }
+ },
+ {
+  "id": "q71",
+  "text": "A small town with a dark secret that everyone pretends not to know.",
+  "theme": "darktown",
+  "traits": {
+   "tone": -0.7,
+   "pace": -0.4,
+   "depth": 0.4
+  },
+  "genres": {
+   "9648": 0.8,
+   "53": 0.6,
+   "18": 0.4
+  }
+ },
+ {
+  "id": "q72",
+  "text": "A home-invasion nightmare that gets worse every ten minutes.",
+  "theme": "invasion",
+  "traits": {
+   "tone": -1,
+   "pace": 0.6
+  },
+  "genres": {
+   "53": 1,
+   "27": 0.5
+  }
+ },
+ {
+  "id": "q73",
+  "text": "A medical or lab experiment that goes terribly wrong.",
+  "theme": "experiment",
+  "traits": {
+   "tone": -0.8,
+   "realism": -0.4
+  },
+  "genres": {
+   "27": 0.6,
+   "878": 0.7
+  }
+ },
+ {
+  "id": "q74",
+  "text": "A gangster saga about loyalty, betrayal and the price of power.",
+  "theme": "mob",
+  "traits": {
+   "tone": -0.7,
+   "depth": 0.5,
+   "realism": 0.6
+  },
+  "genres": {
+   "80": 1,
+   "18": 0.6
+  }
+ },
+ {
+  "id": "q75",
+  "text": "A psychological drama about someone whose mind is coming apart.",
+  "theme": "unravel",
+  "traits": {
+   "tone": -0.9,
+   "pace": -0.5,
+   "depth": 0.8
+  },
+  "genres": {
+   "18": 0.8,
+   "53": 0.6
+  }
+ },
+ {
+  "id": "q76",
+  "text": "A siege: people trapped in a building while something waits outside.",
+  "theme": "siege",
+  "traits": {
+   "tone": -0.8,
+   "pace": 0.4
+  },
+  "genres": {
+   "27": 0.6,
+   "53": 0.7,
+   "28": 0.2
+  }
+ },
+ {
+  "id": "q77",
+  "text": "A dark fantasy where the kingdom is cursed and nobody gets a happy ending.",
+  "theme": "cursed",
+  "traits": {
+   "tone": -0.8,
+   "realism": -0.8,
+   "pace": -0.2
+  },
+  "genres": {
+   "14": 0.9,
+   "27": 0.3,
+   "12": 0.3
+  }
+ },
+ {
+  "id": "q78",
+  "text": "A courtroom or political thriller where powerful people bury the truth.",
+  "theme": "conspiracy",
+  "traits": {
+   "tone": -0.6,
+   "depth": 0.6,
+   "realism": 0.8
+  },
+  "genres": {
+   "53": 0.8,
+   "18": 0.5,
+   "80": 0.3
+  }
+ },
+ {
+  "id": "q79",
+  "text": "A wedding where everything that could go wrong does, and somehow it ends up perfect.",
+  "theme": "wedding",
+  "traits": {
+   "tone": 0.9,
+   "pace": 0.3,
+   "realism": 0.5
+  },
+  "genres": {
+   "35": 0.9,
+   "10749": 0.6
+  }
+ },
+ {
+  "id": "q80",
+  "text": "A dog, a cat or a horse who changes a whole family's life.",
+  "theme": "pet",
+  "traits": {
+   "tone": 0.8,
+   "pace": -0.2,
+   "realism": 0.2
+  },
+  "genres": {
+   "10751": 0.9,
+   "35": 0.4,
+   "18": 0.3
+  }
+ },
+ {
+  "id": "q81",
+  "text": "A cooking or baking story where food brings strangers together.",
+  "theme": "food",
+  "traits": {
+   "tone": 0.8,
+   "pace": -0.3,
+   "realism": 0.6
+  },
+  "genres": {
+   "35": 0.5,
+   "18": 0.5,
+   "10749": 0.3
+  }
+ },
+ {
+  "id": "q82",
+  "text": "A holiday film with snow, lights and a family reunion.",
+  "theme": "holiday",
+  "traits": {
+   "tone": 0.9,
+   "pace": -0.3
+  },
+  "genres": {
+   "10751": 0.7,
+   "10749": 0.5,
+   "35": 0.5
+  }
+ },
+ {
+  "id": "q83",
+  "text": "Two enemies stuck on a trip together who slowly stop hating each other.",
+  "theme": "enemies",
+  "traits": {
+   "tone": 0.7,
+   "pace": 0.2
+  },
+  "genres": {
+   "10749": 0.8,
+   "35": 0.8,
+   "12": 0.2
+  }
+ },
+ {
+  "id": "q84",
+  "text": "A kid's summer adventure with a bike, a secret map and a best friend.",
+  "theme": "kidsummer",
+  "traits": {
+   "tone": 0.8,
+   "realism": -0.2,
+   "depth": -0.2
+  },
+  "genres": {
+   "12": 0.8,
+   "10751": 0.7
+  }
+ },
+ {
+  "id": "q85",
+  "text": "A buddy comedy with two mismatched partners and a lot of banter.",
+  "theme": "buddy",
+  "traits": {
+   "tone": 0.7,
+   "pace": 0.5
+  },
+  "genres": {
+   "35": 1,
+   "28": 0.4,
+   "80": 0.3
+  }
+ },
+ {
+  "id": "q86",
+  "text": "A heart-warming story about an old person and a young person becoming friends.",
+  "theme": "oddfriends",
+  "traits": {
+   "tone": 0.8,
+   "pace": -0.4,
+   "depth": 0.2,
+   "realism": 0.6
+  },
+  "genres": {
+   "18": 0.7,
+   "35": 0.5
+  }
+ },
+ {
+  "id": "q87",
+  "text": "A talent show or school competition where a team of misfits goes for the trophy.",
+  "theme": "misfits",
+  "traits": {
+   "tone": 0.8,
+   "pace": 0.3
+  },
+  "genres": {
+   "35": 0.7,
+   "18": 0.4,
+   "10402": 0.4
+  }
+ },
+ {
+  "id": "q88",
+  "text": "A sunny vacation romance on an island with a ticking end date.",
+  "theme": "island",
+  "traits": {
+   "tone": 0.7,
+   "pace": -0.3
+  },
+  "genres": {
+   "10749": 1,
+   "35": 0.4
+  }
+ },
+ {
+  "id": "q89",
+  "text": "A magical nanny, genie or fairy who fixes everyone's problems.",
+  "theme": "genie",
+  "traits": {
+   "tone": 0.9,
+   "realism": -0.8,
+   "depth": -0.3
+  },
+  "genres": {
+   "14": 0.8,
+   "10751": 0.8,
+   "35": 0.4
+  }
+ },
+ {
+  "id": "q90",
+  "text": "A cheerful road movie where a van full of strangers becomes a family.",
+  "theme": "vanfamily",
+  "traits": {
+   "tone": 0.8,
+   "pace": 0.1,
+   "realism": 0.2
+  },
+  "genres": {
+   "35": 0.8,
+   "18": 0.4,
+   "12": 0.4
+  }
+ },
+ {
+  "id": "q91",
+  "text": "A talking-animals musical set in a jungle or on a farm.",
+  "theme": "animalmusical",
+  "traits": {
+   "tone": 0.9,
+   "realism": -1,
+   "depth": -0.3
+  },
+  "genres": {
+   "16": 1,
+   "10402": 0.7,
+   "10751": 0.6
+  }
+ },
+ {
+  "id": "q92",
+  "text": "Quirky small-town people putting on a very strange festival.",
+  "theme": "festival",
+  "traits": {
+   "tone": 0.8,
+   "pace": -0.3,
+   "realism": 0.2
+  },
+  "genres": {
+   "35": 1,
+   "10751": 0.2
+  }
+ },
+ {
+  "id": "q93",
+  "text": "A train, a bomb and sixty minutes to stop it.",
+  "theme": "train",
+  "traits": {
+   "pace": 1,
+   "tone": -0.4,
+   "depth": -0.2
+  },
+  "genres": {
+   "53": 1,
+   "28": 0.8
+  }
+ },
+ {
+  "id": "q94",
+  "text": "A getaway driver, one last job and a very bad night.",
+  "theme": "getaway",
+  "traits": {
+   "pace": 0.9,
+   "tone": -0.3
+  },
+  "genres": {
+   "80": 0.8,
+   "28": 0.7,
+   "53": 0.5
+  }
+ },
+ {
+  "id": "q95",
+  "text": "A fugitive running across the country with the police one step behind.",
+  "theme": "fugitive",
+  "traits": {
+   "pace": 0.8,
+   "tone": -0.3,
+   "realism": 0.3
+  },
+  "genres": {
+   "53": 0.9,
+   "28": 0.6
+  }
+ },
+ {
+  "id": "q96",
+  "text": "An all-night comedy where one mistake snowballs into total chaos.",
+  "theme": "chaosnight",
+  "traits": {
+   "pace": 0.9,
+   "tone": 0.7
+  },
+  "genres": {
+   "35": 1,
+   "80": 0.2
+  }
+ },
+ {
+  "id": "q97",
+  "text": "A spy mission across five cities in forty-eight hours.",
+  "theme": "fivecities",
+  "traits": {
+   "pace": 0.9,
+   "tone": 0.1,
+   "depth": -0.4
+  },
+  "genres": {
+   "28": 0.8,
+   "53": 0.7,
+   "12": 0.4
+  }
+ },
+ {
+  "id": "q98",
+  "text": "A rescue mission deep behind enemy lines.",
+  "theme": "rescue",
+  "traits": {
+   "pace": 0.8,
+   "tone": -0.5,
+   "realism": 0.4
+  },
+  "genres": {
+   "10752": 0.7,
+   "28": 0.8
+  }
+ },
+ {
+  "id": "q99",
+  "text": "A sports film where the final match gets more intense by the minute.",
+  "theme": "finalmatch",
+  "traits": {
+   "pace": 0.7,
+   "tone": 0.3,
+   "realism": 0.5
+  },
+  "genres": {
+   "18": 0.6,
+   "28": 0.3
+  }
+ },
+ {
+  "id": "q100",
+  "text": "Pirates, sword fights and a ship race to a hidden island.",
+  "theme": "pirates",
+  "traits": {
+   "pace": 0.8,
+   "tone": 0.5,
+   "realism": -0.8
+  },
+  "genres": {
+   "12": 1,
+   "28": 0.6,
+   "14": 0.3
+  }
+ },
+ {
+  "id": "q101",
+  "text": "A cyberpunk hacker story with data heists and double crosses.",
+  "theme": "hacker",
+  "traits": {
+   "pace": 0.8,
+   "realism": -0.5,
+   "depth": 0.2
+  },
+  "genres": {
+   "878": 0.8,
+   "53": 0.7,
+   "80": 0.4
+  }
+ },
+ {
+  "id": "q102",
+  "text": "Cops and robbers: an ordinary patrol turns into a city-wide manhunt.",
+  "theme": "manhunt",
+  "traits": {
+   "pace": 0.8,
+   "realism": 0.4,
+   "tone": -0.2
+  },
+  "genres": {
+   "28": 0.7,
+   "80": 0.8,
+   "53": 0.5
+  }
+ },
+ {
+  "id": "q103",
+  "text": "A survival race against nature: a storm, a mountain and the clock.",
+  "theme": "mountain",
+  "traits": {
+   "pace": 0.8,
+   "tone": -0.4,
+   "realism": 0.6
+  },
+  "genres": {
+   "12": 0.8,
+   "53": 0.6,
+   "18": 0.3
+  }
+ },
+ {
+  "id": "q104",
+  "text": "A video-game-like quest with levels, bosses and zero downtime.",
+  "theme": "gamelike",
+  "traits": {
+   "pace": 0.9,
+   "realism": -0.8,
+   "depth": -0.6
+  },
+  "genres": {
+   "28": 0.8,
+   "12": 0.7,
+   "878": 0.4
+  }
+ },
+ {
+  "id": "q105",
+  "text": "A crazy car race through a desert at full speed.",
+  "theme": "carrace",
+  "traits": {
+   "pace": 1,
+   "depth": -0.6,
+   "realism": -0.3
+  },
+  "genres": {
+   "28": 1,
+   "12": 0.5
+  }
+ },
+ {
+  "id": "q106",
+  "text": "An escape room that tightens every minute until someone breaks.",
+  "theme": "escaperoom",
+  "traits": {
+   "pace": 0.8,
+   "tone": -0.6,
+   "realism": -0.2
+  },
+  "genres": {
+   "53": 0.9,
+   "27": 0.4,
+   "9648": 0.4
+  }
+ },
+ {
+  "id": "q107",
+  "text": "A road trip across a quiet country where the conversations matter more than the destination.",
+  "theme": "quietroad",
+  "traits": {
+   "pace": -0.8,
+   "depth": 0.5,
+   "tone": 0.2,
+   "realism": 0.6
+  },
+  "genres": {
+   "18": 0.9,
+   "12": 0.2
+  }
+ },
+ {
+  "id": "q108",
+  "text": "A painter, a writer or a musician slowly finding their voice.",
+  "theme": "artist",
+  "traits": {
+   "pace": -0.8,
+   "depth": 0.7,
+   "realism": 0.7
+  },
+  "genres": {
+   "18": 1,
+   "10402": 0.3
+  }
+ },
+ {
+  "id": "q109",
+  "text": "A rainy-day romance told in long walks and unsent letters.",
+  "theme": "letters",
+  "traits": {
+   "pace": -0.8,
+   "tone": 0.1
+  },
+  "genres": {
+   "10749": 1,
+   "18": 0.6
+  }
+ },
+ {
+  "id": "q110",
+  "text": "A farm, a family and a year of seasons passing.",
+  "theme": "seasons",
+  "traits": {
+   "pace": -0.9,
+   "realism": 0.8,
+   "tone": 0.1
+  },
+  "genres": {
+   "18": 0.9,
+   "10751": 0.2
+  }
+ },
+ {
+  "id": "q111",
+  "text": "An old western where a stranger rides into a silent town.",
+  "theme": "stranger",
+  "traits": {
+   "pace": -0.6,
+   "tone": -0.4,
+   "depth": 0.3
+  },
+  "genres": {
+   "37": 1,
+   "18": 0.3
+  }
+ },
+ {
+  "id": "q112",
+  "text": "A meditative story of grief, told in small gestures.",
+  "theme": "grief",
+  "traits": {
+   "pace": -0.9,
+   "tone": -0.6,
+   "depth": 0.8,
+   "realism": 0.8
+  },
+  "genres": {
+   "18": 1
+  }
+ },
+ {
+  "id": "q113",
+  "text": "A gentle anime-style tale of a village, a spirit and a quiet summer.",
+  "theme": "spiritsummer",
+  "traits": {
+   "pace": -0.7,
+   "tone": 0.4,
+   "realism": -0.7,
+   "depth": 0.3
+  },
+  "genres": {
+   "16": 0.9,
+   "14": 0.6,
+   "18": 0.3
+  }
+ },
+ {
+  "id": "q114",
+  "text": "A long, beautiful journey on foot through mountains and weather.",
+  "theme": "walk",
+  "traits": {
+   "pace": -0.9,
+   "depth": 0.5,
+   "realism": 0.7
+  },
+  "genres": {
+   "12": 0.6,
+   "18": 0.7,
+   "99": 0.2
+  }
+ },
+ {
+  "id": "q115",
+  "text": "A slow noir where every conversation hides a lie.",
+  "theme": "slownoir",
+  "traits": {
+   "pace": -0.7,
+   "tone": -0.5,
+   "depth": 0.5
+  },
+  "genres": {
+   "80": 0.7,
+   "9648": 0.7,
+   "53": 0.3
+  }
+ },
+ {
+  "id": "q116",
+  "text": "A family saga that covers three generations in one house.",
+  "theme": "generations",
+  "traits": {
+   "pace": -0.7,
+   "realism": 0.7,
+   "depth": 0.5
+  },
+  "genres": {
+   "18": 1,
+   "36": 0.4
+  }
+ },
+ {
+  "id": "q117",
+  "text": "A tender friendship between two outsiders over one long winter.",
+  "theme": "winter",
+  "traits": {
+   "pace": -0.8,
+   "tone": -0.1,
+   "realism": 0.6,
+   "depth": 0.4
+  },
+  "genres": {
+   "18": 1,
+   "10749": 0.2
+  }
+ },
+ {
+  "id": "q118",
+  "text": "A dreamy European art film where mood matters more than plot.",
+  "theme": "arthouse",
+  "traits": {
+   "pace": -0.9,
+   "depth": 0.8,
+   "realism": -0.2
+  },
+  "genres": {
+   "18": 0.8,
+   "10749": 0.3
+  }
+ },
+ {
+  "id": "q119",
+  "text": "A hospital, a school or a lighthouse where small daily routines tell the story.",
+  "theme": "routines",
+  "traits": {
+   "pace": -0.8,
+   "realism": 0.7,
+   "depth": 0.3
+  },
+  "genres": {
+   "18": 1
+  }
+ },
+ {
+  "id": "q120",
+  "text": "A wandering, philosophical sci-fi about a lonely astronaut.",
+  "theme": "lonelyastronaut",
+  "traits": {
+   "pace": -0.8,
+   "tone": -0.3,
+   "depth": 0.8,
+   "realism": -0.4
+  },
+  "genres": {
+   "878": 1,
+   "18": 0.5
+  }
+ },
+ {
+  "id": "q121",
+  "text": "A drama about two scientists, a discovery, and what it costs them.",
+  "theme": "scientists",
+  "traits": {
+   "depth": 0.8,
+   "realism": 0.8,
+   "pace": -0.2
+  },
+  "genres": {
+   "18": 0.8,
+   "36": 0.4,
+   "99": 0.2
+  }
+ },
+ {
+  "id": "q122",
+  "text": "A clever mystery where the twist reframes everything you watched.",
+  "theme": "twist",
+  "traits": {
+   "depth": 0.8,
+   "pace": 0.1,
+   "tone": -0.3
+  },
+  "genres": {
+   "9648": 1,
+   "53": 0.7
+  }
+ },
+ {
+  "id": "q123",
+  "text": "A film about a society that has quietly given up on something important.",
+  "theme": "society",
+  "traits": {
+   "depth": 0.9,
+   "realism": -0.2,
+   "tone": -0.4
+  },
+  "genres": {
+   "878": 0.7,
+   "18": 0.7
+  }
+ },
+ {
+  "id": "q124",
+  "text": "A political drama about idealists trying to change a country.",
+  "theme": "politics",
+  "traits": {
+   "depth": 0.7,
+   "realism": 0.9,
+   "pace": -0.2
+  },
+  "genres": {
+   "18": 0.8,
+   "36": 0.5
+  }
+ },
+ {
+  "id": "q125",
+  "text": "A documentary-style look at an ordinary person doing something extraordinary.",
+  "theme": "extraordinary",
+  "traits": {
+   "depth": 0.7,
+   "realism": 1,
+   "tone": 0.2
+  },
+  "genres": {
+   "99": 1,
+   "18": 0.4
+  }
+ },
+ {
+  "id": "q126",
+  "text": "A story told in two time periods that slowly connect.",
+  "theme": "twotimes",
+  "traits": {
+   "depth": 0.8,
+   "pace": -0.4
+  },
+  "genres": {
+   "18": 0.8,
+   "9648": 0.4,
+   "10749": 0.3
+  }
+ },
+ {
+  "id": "q127",
+  "text": "A film about language, communication and what it means to be understood.",
+  "theme": "language",
+  "traits": {
+   "depth": 1,
+   "pace": -0.5,
+   "realism": -0.2
+  },
+  "genres": {
+   "878": 0.7,
+   "18": 0.8
+  }
+ },
+ {
+  "id": "q128",
+  "text": "A moral thriller where an ordinary person has to decide how far they will go.",
+  "theme": "howfar",
+  "traits": {
+   "depth": 0.8,
+   "tone": -0.5,
+   "realism": 0.6
+  },
+  "genres": {
+   "53": 0.9,
+   "18": 0.7
+  }
+ },
+ {
+  "id": "q129",
+  "text": "A war film seen through the eyes of a child or a civilian.",
+  "theme": "civilian",
+  "traits": {
+   "depth": 0.7,
+   "tone": -0.7,
+   "realism": 0.8,
+   "pace": -0.4
+  },
+  "genres": {
+   "10752": 0.8,
+   "18": 0.9
+  }
+ },
+ {
+  "id": "q130",
+  "text": "A sharp satire that makes you laugh and then think.",
+  "theme": "satire",
+  "traits": {
+   "depth": 0.8,
+   "tone": 0.4,
+   "realism": 0.2
+  },
+  "genres": {
+   "35": 0.9,
+   "18": 0.4
+  }
+ },
+ {
+  "id": "q131",
+  "text": "A courtroom drama based on a historic case.",
+  "theme": "historiccase",
+  "traits": {
+   "depth": 0.7,
+   "realism": 1,
+   "pace": -0.2
+  },
+  "genres": {
+   "18": 0.8,
+   "36": 0.6,
+   "80": 0.3
+  }
+ },
+ {
+  "id": "q132",
+  "text": "A thoughtful animated film for adults about life and death.",
+  "theme": "adultanimation",
+  "traits": {
+   "depth": 0.9,
+   "realism": -0.5,
+   "tone": -0.2
+  },
+  "genres": {
+   "16": 0.9,
+   "18": 0.6
+  }
+ },
+ {
+  "id": "q133",
+  "text": "A mind-bending puzzle about dreams within dreams.",
+  "theme": "dreams",
+  "traits": {
+   "depth": 0.9,
+   "realism": -0.8,
+   "pace": 0.3
+  },
+  "genres": {
+   "878": 0.9,
+   "53": 0.5,
+   "9648": 0.3
+  }
+ },
+ {
+  "id": "q134",
+  "text": "A film about a whole city or system seen through many connected lives.",
+  "theme": "manylives",
+  "traits": {
+   "depth": 0.8,
+   "realism": 0.6,
+   "pace": -0.2
+  },
+  "genres": {
+   "18": 1
+  }
+ },
+ {
+  "id": "q135",
+  "text": "A bright, silly space adventure with weird aliens and a lovable crew.",
+  "theme": "sillyspace",
+  "traits": {
+   "depth": -0.8,
+   "tone": 0.7,
+   "realism": -1,
+   "pace": 0.5
+  },
+  "genres": {
+   "878": 0.9,
+   "35": 0.6,
+   "12": 0.6
+  }
+ },
+ {
+  "id": "q136",
+  "text": "A lone action hero single-handedly takes down a whole building of bad guys.",
+  "theme": "oneman",
+  "traits": {
+   "depth": -0.9,
+   "pace": 0.8,
+   "realism": -0.4
+  },
+  "genres": {
+   "28": 1,
+   "53": 0.4
+  }
+ },
+ {
+  "id": "q137",
+  "text": "A slasher where teenagers make bad decisions in the woods.",
+  "theme": "slasher",
+  "traits": {
+   "depth": -0.8,
+   "tone": -0.5,
+   "pace": 0.5
+  },
+  "genres": {
+   "27": 1
+  }
+ },
+ {
+  "id": "q138",
+  "text": "A cheesy disaster movie: tornadoes, volcanoes and one very brave scientist.",
+  "theme": "disaster",
+  "traits": {
+   "depth": -0.8,
+   "pace": 0.6,
+   "realism": -0.6
+  },
+  "genres": {
+   "28": 0.7,
+   "12": 0.5,
+   "878": 0.3
+  }
+ },
+ {
+  "id": "q139",
+  "text": "A big-budget fantasy battle with armies, dragons and speeches.",
+  "theme": "bigbattle",
+  "traits": {
+   "depth": -0.6,
+   "pace": 0.6,
+   "realism": -1
+  },
+  "genres": {
+   "14": 0.9,
+   "28": 0.7,
+   "12": 0.6
+  }
+ },
+ {
+  "id": "q140",
+  "text": "A swashbuckling adventure with a charming rogue and a treasure map.",
+  "theme": "rogue",
+  "traits": {
+   "depth": -0.6,
+   "tone": 0.7,
+   "pace": 0.5,
+   "realism": -0.5
+  },
+  "genres": {
+   "12": 1,
+   "28": 0.5,
+   "35": 0.4
+  }
+ },
+ {
+  "id": "q141",
+  "text": "A shark, a snake or a giant spider: pure creature feature fun.",
+  "theme": "creature",
+  "traits": {
+   "depth": -0.9,
+   "tone": -0.2,
+   "realism": -0.7,
+   "pace": 0.5
+  },
+  "genres": {
+   "27": 0.7,
+   "53": 0.6,
+   "12": 0.3
+  }
+ },
+ {
+  "id": "q142",
+  "text": "A romcom that follows every rule of the genre and is cozy because of it.",
+  "theme": "formula",
+  "traits": {
+   "depth": -0.7,
+   "tone": 0.8,
+   "pace": -0.1
+  },
+  "genres": {
+   "10749": 1,
+   "35": 0.8
+  }
+ },
+ {
+  "id": "q143",
+  "text": "A parody of action or horror films that knows every cliché.",
+  "theme": "cliche",
+  "traits": {
+   "depth": -0.7,
+   "tone": 0.7,
+   "pace": 0.4,
+   "realism": -0.6
+  },
+  "genres": {
+   "35": 1,
+   "28": 0.5,
+   "27": 0.3
+  }
+ },
+ {
+  "id": "q144",
+  "text": "A kids' cartoon you can enjoy at any age, full of jokes and bright colors.",
+  "theme": "cartoon",
+  "traits": {
+   "depth": -0.6,
+   "tone": 0.9,
+   "realism": -1
+  },
+  "genres": {
+   "16": 1,
+   "10751": 0.8,
+   "35": 0.6
+  }
+ },
+ {
+  "id": "q145",
+  "text": "A silly time-travel comedy where history gets hilariously messy.",
+  "theme": "timecomedy",
+  "traits": {
+   "depth": -0.6,
+   "tone": 0.8,
+   "realism": -0.8
+  },
+  "genres": {
+   "35": 0.9,
+   "878": 0.6,
+   "12": 0.3
+  }
+ },
+ {
+  "id": "q146",
+  "text": "A high-speed heist of cartoonish bad guys and cool outfits.",
+  "theme": "coolheist",
+  "traits": {
+   "depth": -0.7,
+   "pace": 0.8,
+   "tone": 0.5
+  },
+  "genres": {
+   "80": 0.7,
+   "28": 0.6,
+   "35": 0.5
+  }
+ },
+ {
+  "id": "q147",
+  "text": "Mindless martial arts action: no plot needed.",
+  "theme": "noplot",
+  "traits": {
+   "depth": -1,
+   "pace": 0.8
+  },
+  "genres": {
+   "28": 1
+  }
+ },
+ {
+  "id": "q148",
+  "text": "A feel-good sports comedy where the worst team in the league gets a coach.",
+  "theme": "worstteam",
+  "traits": {
+   "depth": -0.6,
+   "tone": 0.8,
+   "pace": 0.3,
+   "realism": 0.2
+  },
+  "genres": {
+   "35": 0.9,
+   "18": 0.4,
+   "10751": 0.2
+  }
+ },
+ {
+  "id": "q149",
+  "text": "A true story of survival at sea or on a mountain.",
+  "theme": "truesurvival",
+  "traits": {
+   "realism": 1,
+   "tone": -0.5,
+   "pace": 0.4
+  },
+  "genres": {
+   "12": 0.5,
+   "18": 0.7,
+   "99": 0.3
+  }
+ },
+ {
+  "id": "q150",
+  "text": "A teacher or a doctor trying to make a difference in a broken system.",
+  "theme": "brokensystem",
+  "traits": {
+   "realism": 1,
+   "tone": -0.2,
+   "depth": 0.5
+  },
+  "genres": {
+   "18": 1
+  }
+ },
+ {
+  "id": "q151",
+  "text": "A story about two friends who grow apart, set in the real modern world.",
+  "theme": "growapart",
+  "traits": {
+   "realism": 0.9,
+   "pace": -0.5,
+   "tone": -0.1
+  },
+  "genres": {
+   "18": 1,
+   "35": 0.3
+  }
+ },
+ {
+  "id": "q152",
+  "text": "A police procedural that follows the boring, real steps of a case.",
+  "theme": "procedural",
+  "traits": {
+   "realism": 1,
+   "pace": -0.1,
+   "tone": -0.4,
+   "depth": 0.4
+  },
+  "genres": {
+   "80": 0.8,
+   "9648": 0.5,
+   "18": 0.4
+  }
+ },
+ {
+  "id": "q153",
+  "text": "An immigrant family trying to build a life in a new country.",
+  "theme": "immigrant",
+  "traits": {
+   "realism": 1,
+   "depth": 0.5,
+   "tone": -0.1,
+   "pace": -0.3
+  },
+  "genres": {
+   "18": 1
+  }
+ },
+ {
+  "id": "q154",
+  "text": "A journalism film about reporters chasing a story that matters.",
+  "theme": "reporters",
+  "traits": {
+   "realism": 1,
+   "depth": 0.6,
+   "pace": 0.2
+  },
+  "genres": {
+   "18": 0.8,
+   "53": 0.5,
+   "9648": 0.4
+  }
+ },
+ {
+  "id": "q155",
+  "text": "A sports documentary or biopic about a comeback.",
+  "theme": "comeback",
+  "traits": {
+   "realism": 1,
+   "tone": 0.4,
+   "pace": 0.2
+  },
+  "genres": {
+   "99": 0.6,
+   "18": 0.8
+  }
+ },
+ {
+  "id": "q156",
+  "text": "A realistic teenage drama that does not look away from hard things.",
+  "theme": "realteen",
+  "traits": {
+   "realism": 1,
+   "tone": -0.4,
+   "pace": -0.2
+  },
+  "genres": {
+   "18": 1
+  }
+ },
+ {
+  "id": "q157",
+  "text": "A historical epic about real people in a real war.",
+  "theme": "realwar",
+  "traits": {
+   "realism": 0.9,
+   "tone": -0.6,
+   "depth": 0.5
+  },
+  "genres": {
+   "10752": 0.8,
+   "36": 0.9,
+   "18": 0.5
+  }
+ },
+ {
+  "id": "q158",
+  "text": "A comedy about everyday life: bad dates, messy roommates, awkward jobs.",
+  "theme": "everyday",
+  "traits": {
+   "realism": 0.9,
+   "tone": 0.7,
+   "depth": -0.2
+  },
+  "genres": {
+   "35": 1,
+   "10749": 0.4
+  }
+ },
+ {
+  "id": "q159",
+  "text": "A quiet story of a couple in a long marriage, warts and all.",
+  "theme": "marriage",
+  "traits": {
+   "realism": 1,
+   "pace": -0.6,
+   "depth": 0.5
+  },
+  "genres": {
+   "18": 1,
+   "10749": 0.5
+  }
+ },
+ {
+  "id": "q160",
+  "text": "A heist or fraud story based on a real scandal.",
+  "theme": "scandal",
+  "traits": {
+   "realism": 1,
+   "pace": 0.4,
+   "depth": 0.3
+  },
+  "genres": {
+   "80": 0.8,
+   "18": 0.6,
+   "35": 0.3
+  }
+ },
+ {
+  "id": "q161",
+  "text": "A real-life rescue that keeps the whole world watching.",
+  "theme": "reallife",
+  "traits": {
+   "realism": 1,
+   "pace": 0.5,
+   "tone": -0.2
+  },
+  "genres": {
+   "18": 0.6,
+   "53": 0.5,
+   "99": 0.3
+  }
+ },
+ {
+  "id": "q162",
+  "text": "A character trying to rebuild their life after prison, addiction or loss.",
+  "theme": "rebuild",
+  "traits": {
+   "realism": 1,
+   "tone": -0.4,
+   "depth": 0.6,
+   "pace": -0.4
+  },
+  "genres": {
+   "18": 1
+  }
+ },
+ {
+  "id": "q163",
+  "text": "A kingdom beneath the sea, with mermaids and ancient sea kings.",
+  "theme": "undersea",
+  "traits": {
+   "realism": -1,
+   "tone": 0.4
+  },
+  "genres": {
+   "14": 0.8,
+   "16": 0.7,
+   "12": 0.6
+  }
+ },
+ {
+  "id": "q164",
+  "text": "A school for wizards, with secret passages and strange classes.",
+  "theme": "wizardschool",
+  "traits": {
+   "realism": -1,
+   "tone": 0.3,
+   "depth": -0.1
+  },
+  "genres": {
+   "14": 1,
+   "12": 0.6,
+   "10751": 0.4
+  }
+ },
+ {
+  "id": "q165",
+  "text": "A robot who learns to love, in a world of broken machines.",
+  "theme": "robotheart",
+  "traits": {
+   "realism": -0.9,
+   "tone": 0.1,
+   "depth": 0.4,
+   "pace": -0.3
+  },
+  "genres": {
+   "878": 0.9,
+   "16": 0.5,
+   "10749": 0.4
+  }
+ },
+ {
+  "id": "q166",
+  "text": "A dragon-rider or sky-pirate adventure above the clouds.",
+  "theme": "skypirates",
+  "traits": {
+   "realism": -1,
+   "pace": 0.6,
+   "tone": 0.4
+  },
+  "genres": {
+   "12": 1,
+   "14": 0.8,
+   "16": 0.4
+  }
+ },
+ {
+  "id": "q167",
+  "text": "A haunted-house comedy with friendly ghosts.",
+  "theme": "friendlyghosts",
+  "traits": {
+   "realism": -0.9,
+   "tone": 0.7,
+   "depth": -0.4
+  },
+  "genres": {
+   "35": 0.8,
+   "14": 0.7,
+   "27": 0.2
+  }
+ },
+ {
+  "id": "q168",
+  "text": "A portal to another world hidden in an ordinary wardrobe, attic or mirror.",
+  "theme": "portal",
+  "traits": {
+   "realism": -0.9,
+   "tone": 0.2
+  },
+  "genres": {
+   "14": 1,
+   "12": 0.8,
+   "10751": 0.4
+  }
+ },
+ {
+  "id": "q169",
+  "text": "A superhero origin story: an ordinary person gets extraordinary powers.",
+  "theme": "origin",
+  "traits": {
+   "realism": -0.8,
+   "pace": 0.5,
+   "tone": 0.1
+  },
+  "genres": {
+   "28": 0.6,
+   "878": 0.8,
+   "12": 0.4
+  }
+ },
+ {
+  "id": "q170",
+  "text": "An alien visitor trying to understand human life.",
+  "theme": "visitor",
+  "traits": {
+   "realism": -0.9,
+   "tone": 0.4,
+   "depth": 0.3
+  },
+  "genres": {
+   "878": 1,
+   "35": 0.4,
+   "10751": 0.3
+  }
+ },
+ {
+  "id": "q171",
+  "text": "A magical heist or duel between rival sorcerers.",
+  "theme": "sorcerers",
+  "traits": {
+   "realism": -1,
+   "pace": 0.5,
+   "tone": -0.2
+  },
+  "genres": {
+   "14": 0.9,
+   "28": 0.5,
+   "53": 0.3
+  }
+ },
+ {
+  "id": "q172",
+  "text": "A steampunk world of airships, clockwork and strange inventors.",
+  "theme": "steampunk",
+  "traits": {
+   "realism": -1,
+   "pace": 0.4,
+   "tone": 0.2
+  },
+  "genres": {
+   "878": 0.7,
+   "12": 0.8,
+   "14": 0.5
+  }
+ },
+ {
+  "id": "q173",
+  "text": "A myth retold: gods, monsters and heroes of ancient legend.",
+  "theme": "myth",
+  "traits": {
+   "realism": -1,
+   "pace": 0.4,
+   "tone": -0.2
+  },
+  "genres": {
+   "14": 0.8,
+   "12": 0.9,
+   "28": 0.5
+  }
+ },
+ {
+  "id": "q174",
+  "text": "A body-swap or switched-lives comedy with a magical twist.",
+  "theme": "bodyswap",
+  "traits": {
+   "realism": -0.9,
+   "tone": 0.8,
+   "depth": -0.3
+  },
+  "genres": {
+   "35": 1,
+   "14": 0.6,
+   "10751": 0.3
+  }
+ },
+ {
+  "id": "q175",
+  "text": "A post-human future where cities float and nature has taken over the ground.",
+  "theme": "floating",
+  "traits": {
+   "realism": -1,
+   "pace": -0.3,
+   "depth": 0.4,
+   "tone": 0.1
+  },
+  "genres": {
+   "878": 0.9,
+   "12": 0.4,
+   "16": 0.3
+  }
+ },
+ {
+  "id": "q176",
+  "text": "A wild west with robots, werewolves or aliens.",
+  "theme": "mashup",
+  "traits": {
+   "realism": -0.9,
+   "pace": 0.5,
+   "depth": -0.4
+  },
+  "genres": {
+   "37": 0.7,
+   "878": 0.6,
+   "27": 0.4
+  }
  }
 ]

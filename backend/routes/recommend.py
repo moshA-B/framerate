@@ -42,4 +42,5 @@ def reel_next(body: ReelRequest, user: User | None = Depends(get_optional_user),
             answers.append({"id": item.id, "answer": item.answer})
     lean = [g for g in dict.fromkeys(body.lean) if g in recommender.GENRES]
 
-    return engine.reel(answers, body.seed, lean, body.finish, rows, wishlist_refs, seen, BANK, tmdb)
+    return engine.reel(answers, body.seed, lean, body.finish, rows, wishlist_refs, seen, BANK, tmdb,
+                       [a[:10] for a in body.avoid])

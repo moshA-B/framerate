@@ -83,7 +83,8 @@ class ProfileTests(unittest.TestCase):
 
 class MoodTests(unittest.TestCase):
     def test_bank_is_valid(self):
-        self.assertGreaterEqual(len(BANK), 60)
+        self.assertGreaterEqual(len(BANK), 150)
+        self.assertEqual(len({q["theme"] for q in BANK}), len(BANK))   # every theme is different
         self.assertEqual(len(BANK_BY_ID), len(BANK))          # unique ids
         for q in BANK:
             self.assertTrue(set(q["traits"]) <= set(rec.AXES), q["id"])
@@ -105,17 +106,29 @@ class MoodTests(unittest.TestCase):
         mood = rec.mood_from_answers([{"id": "q03", "answer": 0}], BANK_BY_ID)
         self.assertFalse(rec.has_mood(mood))
 
-    def test_quiz_never_repeats_and_first_questions_are_broad(self):
+    def test_quiz_never_repeats(self):
         for seed in range(30):
             answers, ids = [], []
             for step in range(rec.QUESTIONS_TOTAL):
                 q = rec.next_question(answers, BANK, rec.make_rng(seed, step))
                 self.assertIsNotNone(q)
-                if step < 3:
-                    self.assertTrue(q.get("broad"), f"seed {seed} step {step} not broad")
                 self.assertNotIn(q["id"], ids)
                 ids.append(q["id"])
                 answers.append({"id": q["id"], "answer": random.Random(seed + step).choice([-1, 0, 1])})
+
+    def test_first_question_is_different_between_seeds(self):
+        firsts = {rec.next_question([], BANK, rec.make_rng(seed, 0))["id"] for seed in range(40)}
+        self.assertGreaterEqual(len(firsts), 15)           # not a fixed opening
+
+    def test_avoid_list_keeps_old_scenarios_away(self):
+        seen = {q["id"] for q in BANK[:100]}
+        for seed in range(30):
+            q = rec.next_question([], BANK, rec.make_rng(seed, 0), seen)
+            self.assertNotIn(q["id"], seen)
+
+    def test_avoid_is_only_a_penalty(self):
+        everything = {q["id"] for q in BANK}               # even if everything was seen, we still get a question
+        self.assertIsNotNone(rec.next_question([], BANK, rec.make_rng(1, 0), everything))
 
     def test_same_seed_same_question(self):
         a = rec.next_question([], BANK, rec.make_rng(5, 0))
@@ -274,6 +287,30 @@ class EngineTests(unittest.TestCase):
         self.assertTrue(out["done"])
         self.assertGreater(len(out["picks"]), 0)
         self.assertTrue(all(p["reasons"] for p in out["picks"]))
+
+    def test_weighted_order_keeps_everything_and_favours_high_scores(self):
+        items = [(0.9, "a"), (0.2, "b"), (0.5, "c")]
+        firsts = {"a": 0, "b": 0, "c": 0}
+        for seed in range(300):
+            order = engine.weighted_order(items, random.Random(seed))
+            self.assertEqual(sorted(x[1] for x in order), ["a", "b", "c"])
+            firsts[order[0][1]] += 1
+        self.assertGreater(firsts["a"], firsts["c"])
+        self.assertGreater(firsts["c"], firsts["b"])
+
+    def test_reel_picks_vary_between_seeds_but_stay_in_top_n(self):
+        # 40 good movies: different seeds should give different first picks.
+        for i in range(100, 140):
+            self.catalog[("movie", i)] = card(i, [878, 18], rating=7 + (i % 10) / 10)
+        answers = [{"id": i, "answer": 1} for i in ("q05", "q10", "q19", "q25")]
+        firsts = {engine.reel(answers, seed, [], True, [], [], set(), BANK, self.tmdb)["picks"][0]["tmdb_id"]
+                  for seed in range(25)}
+        self.assertGreaterEqual(len(firsts), 4)
+
+    def test_reel_asks_for_several_pages(self):
+        answers = [{"id": i, "answer": 1} for i in ("q05", "q10", "q19", "q25")]
+        engine.reel(answers, 3, [], True, [], [], set(), BANK, self.tmdb)
+        self.assertGreaterEqual(len(self.tmdb.discover_calls), 8)
 
     def test_reel_finish_early_needs_enough_answers(self):
         few = [{"id": "q05", "answer": 1}]

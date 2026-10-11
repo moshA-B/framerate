@@ -138,6 +138,8 @@ def profile_match(genres, profile):
 # ----------------------------------------------------------------------------
 QUESTIONS_TOTAL = 8      # the quiz asks 8 scenarios, never more
 MIN_QUESTIONS = 4        # "show me now" is allowed after this many
+NOISE = 0.8              # random shake added to each scenario's score: bigger = less predictable
+AVOID_PENALTY = 1.5      # score taken off scenarios the user already saw in an earlier quiz
 
 
 def load_bank(path=None):
@@ -181,20 +183,21 @@ def has_mood(mood):
     return any(v > 0 for v in mood["evidence"].values()) or bool(mood["genres"])
 
 
-def next_question(answers, bank, rng):
+def next_question(answers, bank, rng, avoid=()):
     # Picks the next scenario. Not a fixed list: it depends on the answers so far.
-    #  - the first 3 are "broad" (not about one genre) and cover different axes,
-    #  - then it asks about the axes we still know least about,
+    #  - it asks about the axes we still know least about,
     #  - it leans into genres the user liked, avoids ones they disliked,
-    #  - it never repeats a scenario or the same theme twice in a row.
+    #  - it never repeats a scenario or the same theme twice in a row,
+    #  - `avoid` = scenarios the browser showed in earlier quizzes: they get a penalty,
+    #    so a new quiz feels new (it is a penalty, not a ban, so the bank can never run dry),
+    #  - a random number is added, so even the first question is different every time.
     bank_by_id = {q["id"]: q for q in bank}
     mood = mood_from_answers(answers, bank_by_id)
     answered = {a["id"] for a in answers}
+    avoid = set(avoid)
     recent_themes = {bank_by_id[a["id"]]["theme"] for a in answers[-2:] if a["id"] in bank_by_id}
 
     pool = [q for q in bank if q["id"] not in answered and q["theme"] not in recent_themes]
-    if len(answers) < 3:
-        pool = [q for q in pool if q.get("broad")] or pool
     if not pool:
         return None
 
@@ -204,7 +207,9 @@ def next_question(answers, bank, rng):
         unknown = max(0.0, 2.0 - mood["evidence"][main_axis])        # prefer what we know least
         liked = sum(max(0.0, mood["genres"].get(g, 0.0)) * w for g, w in q["genres"].items())
         disliked = sum(max(0.0, -mood["genres"].get(g, 0.0)) * w for g, w in q["genres"].items())
-        score = unknown + 0.6 * min(liked, 1.5) - 0.8 * min(disliked, 1.5) + rng.random() * 0.5
+        score = unknown + 0.6 * min(liked, 1.5) - 0.8 * min(disliked, 1.5) + rng.random() * NOISE
+        if q["id"] in avoid:
+            score -= AVOID_PENALTY
         if best_score is None or score > best_score:
             best, best_score = q, score
     return best

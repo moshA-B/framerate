@@ -12,6 +12,9 @@ MIN_SIGNALS = 3    # fewer than this and "For you" asks the user to rate a few t
 ROW_SIZE = 12      # titles per row in "For you"
 TOP_ROW = 8        # the first row is shorter, so the rows below still have something new to show
 PICKS = 8          # titles the Reel keeps in reserve for "throw me another"
+TOP_N = 20         # the Reel picks at random among the best TOP_N candidates...
+WEIGHT_POWER = 4   # ...but better scores are more likely: weight = score ** WEIGHT_POWER (0 = fully random)
+PAGES = 4          # TMDB pages fetched per search, so the candidate pool is wide (20 titles per page)
 
 EMPTY_MOOD = rec.mood_from_answers([], {})   # "no quiz": every mood number is zero
 
@@ -186,7 +189,7 @@ def taste_batch(count, media_type, excluded, tmdb, rng):
 # ----------------------------------------------------------------------------
 # The Reel (mood quiz)
 # ----------------------------------------------------------------------------
-def reel(answers, seed, lean, finish, rows, wishlist_refs, seen, bank, tmdb):
+def reel(answers, seed, lean, finish, rows, wishlist_refs, seen, bank, tmdb, avoid=()):
     # One endpoint does both jobs, so the server needs no memory between requests:
     #   not finished -> returns the next question
     #   finished     -> returns ranked picks (the browser shows them one by one)
@@ -194,7 +197,7 @@ def reel(answers, seed, lean, finish, rows, wishlist_refs, seen, bank, tmdb):
     count = len(answers)
     ready = count >= rec.QUESTIONS_TOTAL or (finish and count >= rec.MIN_QUESTIONS)
     if not ready:
-        question = rec.next_question(answers, bank, rec.make_rng(seed, count))
+        question = rec.next_question(answers, bank, rec.make_rng(seed, count), avoid)
         if question is not None:
             return {"done": False, "asked": count, "total": rec.QUESTIONS_TOTAL,
                     "question": {"id": question["id"], "text": question["text"]}, "picks": []}
@@ -208,13 +211,16 @@ def _picks(answers, seed, lean, rows, wishlist_refs, seen, bank, tmdb):
     profile = profile_of(signals)
 
     # Where to look: the genres that best fit tonight's mood, taste and lean.
+    # We ask for several PAGES of each search, so there are plenty of candidates to choose from.
     wanted = rec.genres_for_mood(mood, profile, lean, 3)
     tmdb_genres = rec.to_tmdb_genres("movie", wanted)
-    extra = [
-        lambda: tmdb.discover("movie", tmdb_genres, 1, "vote_average.desc", 2000)["results"],
-        lambda: tmdb.discover("movie", tmdb_genres[:1], 1, "popularity.desc", 800)["results"],
-        lambda: tmdb.discover("movie", tmdb_genres[1:2] or None, 1, "popularity.desc", 800)["results"],
-    ]
+    extra = []
+    for page in range(1, PAGES + 1):
+        extra.append(lambda p=page: tmdb.discover("movie", tmdb_genres, p, "popularity.desc", 800)["results"])
+        extra.append(lambda p=page: tmdb.discover("movie", tmdb_genres, p, "vote_average.desc", 2000)["results"])
+    for page in range(1, 3):                  # the two best genres on their own (cards for each mood)
+        extra.append(lambda p=page: tmdb.discover("movie", tmdb_genres[:1], p, "popularity.desc", 800)["results"])
+        extra.append(lambda p=page: tmdb.discover("movie", tmdb_genres[1:2] or None, p, "popularity.desc", 800)["results"])
     pool, rec_bonus, rec_sources, _, extras = _collect("movie", signals, profile, tmdb, extra)
     for cards in extras:
         for card in cards:
@@ -228,7 +234,6 @@ def _picks(answers, seed, lean, rows, wishlist_refs, seen, bank, tmdb):
             pool.setdefault(_key(card), card)
             wishlisted.add(_key(card))
 
-    jitter = rec.make_rng(seed, 99)    # a tiny shake, so two quizzes are not identical
     scored = []
     for key, card in pool.items():
         if key in seen or key[0] != "movie":
@@ -237,9 +242,25 @@ def _picks(answers, seed, lean, rows, wishlist_refs, seen, bank, tmdb):
         total, parts = rec.score_candidate(
             candidate, profile, mood, rec_bonus.get(key, 0.0), rec.WEIGHTS_QUIZ, lean,
             wishlist_bonus=0.15 if key in wishlisted else 0.0)
-        total += jitter.random() * 0.03
         reasons = rec.explain(candidate, parts, profile, mood, rec_sources.get(key, []),
                               key in wishlisted, lean)
         scored.append((total, card, reasons))
     scored.sort(key=lambda item: -item[0])
-    return [dict(card, reasons=reasons) for _, card, reasons in scored[:PICKS]]
+
+    # Not always the single best: take the TOP_N best, then draw from them at random, where
+    # a higher score means a higher chance. The same answers can now give different picks.
+    top = scored[:TOP_N]
+    chosen = weighted_order(top, rec.make_rng(seed, 99))
+    return [dict(card, reasons=reasons) for _, card, reasons in chosen[:PICKS]]
+
+
+def weighted_order(items, rng):
+    # items = [(score, ...)]. Returns them in a random order where high scores tend to come first.
+    # Each round draws one item with chance proportional to score ** WEIGHT_POWER, then removes it.
+    left = list(items)
+    order = []
+    while left:
+        weights = [max(item[0], 0.01) ** WEIGHT_POWER for item in left]
+        index = rng.choices(range(len(left)), weights=weights)[0]
+        order.append(left.pop(index))
+    return order
