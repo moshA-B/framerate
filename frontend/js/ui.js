@@ -17,6 +17,12 @@ function el(tag, props = {}, ...children) {
   return node;
 }
 
+// Puts children into a box and replaces what was there. Unlike box.replaceChildren(...), it SKIPS
+// null / undefined / false, so "cond ? element : null" is safe. (replaceChildren(null) would show the word "null".)
+function fill(box, ...children) {
+  box.replaceChildren(...children.flat().filter((c) => c !== null && c !== undefined && c !== false));
+}
+
 // ------------------------- messages -------------------------
 // A short pop-up message in the corner that disappears after 3 seconds.
 // kind "ok" = cobalt (success), "warn" = tangerine (problem).

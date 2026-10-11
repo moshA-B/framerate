@@ -69,7 +69,7 @@ if (initPage("reel")) {
     const button = (text, cls, value) =>
       el("button", { className: `btn ${cls}`, type: "button", onclick: () => answer(q.id, value) }, text);
     const canFinish = answers.length >= 4;
-    stage.replaceChildren(
+    fill(stage,
       el("div", { className: "progress", role: "progressbar", "aria-valuemin": 0, "aria-valuemax": state.total,
                   "aria-valuenow": state.asked, "aria-label": "Quiz progress" },
         el("div", { style: `width:${Math.round((state.asked / state.total) * 100)}%` })),
@@ -95,7 +95,7 @@ if (initPage("reel")) {
     }
     const p = picks[pickIndex];
     const others = picks.filter((_, i) => i !== pickIndex).slice(0, 4);
-    stage.replaceChildren(
+    fill(stage,
       el("div", { className: "pick" },
         titleCard(p),
         el("div", {},
