@@ -69,10 +69,10 @@ services:
     restart: unless-stopped
 
   # ---------------------------------------------------------------
-  # 3) FRONTEND - nginx serving our HTML/CSS/JS (./frontend)
+  # 3) FRONTEND - the React app, built with Node and served by nginx (./frontend)
   # ---------------------------------------------------------------
   frontend:
-    build: ./frontend           # builds the image from frontend/Dockerfile
+    build: ./frontend           # builds the image from frontend/Dockerfile (React build + nginx)
     ports:
       # The website is at http://localhost:8080  (nginx listens on 80 inside)
       - "8080:80"

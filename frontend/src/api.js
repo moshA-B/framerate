@@ -1,30 +1,30 @@
 // api.js - everything about TALKING to the backend, plus remembering the login.
-// Every page loads this file first, so its functions can be used by all other scripts.
+// This is a normal JavaScript module (no React in it). Components import what they need.
 
 // Where the backend lives: the same computer that served this page, on port 8000.
 // On your PC this is http://localhost:8000. Through the SSH tunnel to the VM it is also
 // localhost:8000. (If you open the site by the VM's IP, it becomes http://VM_IP:8000.)
-const API_URL = `${window.location.protocol}//${window.location.hostname}:8000`;
+export const API_URL = `${window.location.protocol}//${window.location.hostname}:8000`;
 
 // ------------------------- remembering the login -------------------------
 // localStorage keeps small texts in the browser, even after it is closed.
 // We keep the login token (the "JWT") and the user's info (name, role).
-function getToken() {
+export function getToken() {
   return localStorage.getItem("token");
 }
 
-function getUser() {
+export function getUser() {
   const text = localStorage.getItem("user");
   return text ? JSON.parse(text) : null;
 }
 
-function saveLogin(data) {
+export function saveLogin(data) {
   // `data` is what POST /api/auth/login (or /google) returns: {access_token, user}
   localStorage.setItem("token", data.access_token);
   localStorage.setItem("user", JSON.stringify(data.user));
 }
 
-function clearLogin() {
+export function clearLogin() {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
 }
@@ -33,8 +33,8 @@ function clearLogin() {
 // api("/api/titles/popular")                                  -> GET
 // api("/api/me/wishlist", {method: "POST", body: {...}})      -> POST with JSON
 // It returns the answer as a JavaScript object. If something goes wrong it THROWS an
-// Error whose message is readable, so pages just do:  try { ... } catch (e) { show(e.message) }
-async function api(path, { method = "GET", body = null } = {}) {
+// Error whose message is readable, so components just do:  try { ... } catch (e) { setError(e.message) }
+export async function api(path, { method = "GET", body = null } = {}) {
   const headers = {};
   const token = getToken();
   if (token) headers["Authorization"] = `Bearer ${token}`; // proves who we are
@@ -64,9 +64,10 @@ async function api(path, { method = "GET", body = null } = {}) {
 
   if (!response.ok) {
     // Our token stopped working (expired or invalid): log out and go to the login page.
+    // A full page load (not React Router) also resets every React state in one go.
     if (response.status === 401 && token) {
       clearLogin();
-      window.location.href = "login.html?expired=1";
+      window.location.href = "/login?expired=1";
     }
     throw new Error(errorText(data, response.status));
   }
@@ -83,4 +84,14 @@ function errorText(data, status) {
     return `${field}: ${first.msg}`;
   }
   return `Something went wrong (error ${status})`;
+}
+
+// ------------------------- small helpers shared by pages -------------------------
+export function yearOf(item) {
+  return item.release_date ? item.release_date.slice(0, 4) : "";
+}
+
+// Where a title's details page lives.
+export function detailsPath(item) {
+  return `/details/${item.media_type}/${item.tmdb_id}`;
 }

@@ -23,7 +23,7 @@ permissions, and every feature maps to a simple database table.
 | Requirement | How Framerate meets it |
 |---|---|
 | Login with two roles (manager + regular user) | Register/login with JWT tokens. Roles `user` and `manager`. Manager-only API routes and a manager-only admin page. |
-| Frontend | Plain HTML, CSS and JavaScript (10 pages), served by nginx. |
+| Frontend | React single-page app (12 pages as components, React Router), built with Vite and served by nginx. |
 | Backend | FastAPI (Python) REST API. |
 | Database | PostgreSQL (SQLite for local development), accessed with SQLAlchemy. |
 | External API | TMDB (The Movie Database): search, popular, trending, details, cast, streaming providers, episodes. |
@@ -34,7 +34,7 @@ permissions, and every feature maps to a simple database table.
 
 ```mermaid
 flowchart LR
-    B[Browser<br/>HTML + CSS + JS] -->|pages| N[nginx container<br/>port 8080]
+    B[Browser<br/>React app] -->|app files| N[nginx container<br/>port 8080]
     B -->|JSON over HTTP<br/>fetch + JWT| A[FastAPI container<br/>port 8000]
     A -->|SQLAlchemy| D[(PostgreSQL container)]
     A -->|httpx + API key| T[TMDB API]
@@ -44,7 +44,7 @@ flowchart LR
 
 Three containers run with one command (`docker compose up --build`):
 
-- **frontend** (nginx): serves the static files.
+- **frontend** (nginx): serves the built React app (a few static files; React draws every page in the browser).
 - **backend** (FastAPI): all logic and security. It is the only part that talks to the database and to TMDB.
 - **db** (PostgreSQL): stores users and their lists. Data lives in a Docker volume, so it survives restarts.
 
@@ -180,8 +180,8 @@ unreachable, 503 a feature is not configured.
 5. **Same message for "no such user" and "wrong password"**, so attackers cannot discover usernames.
 6. **Input validation** with Pydantic on every request (lengths, patterns, number ranges).
 7. **SQL injection:** impossible by construction, because all queries go through SQLAlchemy with bound parameters.
-8. **XSS:** the frontend builds pages with `textContent`/DOM functions, never by pasting text from the
-   internet into HTML, so a movie title or a review cannot run code.
+8. **XSS:** React escapes every value it puts on the page (`{title.title}` becomes text, never HTML), and the code never
+   uses `dangerouslySetInnerHTML`, so a movie title or a review cannot run code.
 9. **Secrets** (TMDB key, JWT secret, database password, SMTP password) live in `.env`, which is excluded
    from Git and from the Docker image.
 10. **CORS** allows only the site's own addresses to call the API from a browser.
@@ -227,21 +227,37 @@ sequenceDiagram
 
 ## 9. Frontend
 
-**Pages:** Home, Search, Details, Wishlist, History, Admin, Login, Register, Forgot password, Reset password.
+The frontend is a **React** single-page app: the browser loads one HTML page and React draws every page of the site
+inside it, so moving between pages does not reload anything. Tools: **Vite** (builds the code into plain files),
+**React Router** (the addresses `/search`, `/wishlist` ...). Plain JavaScript, no TypeScript, no other libraries.
 
-**Structure:** every page has the same skeleton (navbar, main, footer) and loads the same three shared scripts, then
-its own script:
+**Pages** (one component each, in `src/pages/`): Home, Search, Details, Wishlist, History, Taste ("Refine my taste"),
+Reel, Admin, Login, Register, Forgot password, Reset password.
 
-- `api.js`: `api()` function that adds the token, handles errors (a 401 logs you out), and stores the login in `localStorage`.
-- `ui.js`: helpers that build elements safely, the title card, toasts, empty and loading states.
-- `auth.js`: `initPage()` builds the navbar for the current user and protects pages (login-only or manager-only).
+**Structure of `frontend/src/`:**
+
+- `main.jsx`: starts the app and wraps it in the router and two providers.
+- `App.jsx`: the navbar, the footer and the list of routes (address -> page). `RequireAuth` guards pages that need a login
+  or the manager role.
+- `AuthContext.jsx`: "who is logged in" shared with every component through React context (`useAuth()`).
+- `ToastContext.jsx`: the small pop-up messages (`useToast()`).
+- `api.js`: the `api()` function that adds the token, handles errors (a 401 logs you out), and stores the login in `localStorage`.
+- `hooks.js`: small reusable hooks (page title, add to wishlist, where to go after login).
+- `components/`: pieces used on several pages: Navbar, Footer, TitleCard, Poster, Skeletons, EmptyState, ErrorMessage,
+  ConfirmButton (two-click delete), GoogleButton.
+
+**Ideas used.** *State* (`useState`): values that redraw the page when they change, such as the list of wishlist items.
+*Effects* (`useEffect`): code that runs after a component appears, such as loading data; it returns a cleanup function that
+ignores answers that arrive after the user already left. *Props*: data passed from a parent to a child component.
+*Controlled forms*: every input's text lives in state. *Context*: login and toasts without passing them through every level.
 
 **Design:** "Pop Sticker, Cobalt": thick black outlines, hard offset shadows, flat colors, rounded corners; a
-palette of only chalk, white, ink, cobalt, tangerine and sky (defined as CSS variables in `style.css`).
+palette of only chalk, white, ink, cobalt, tangerine and sky (defined as CSS variables in `css/style.css`).
 Accessibility: real buttons/links/labels, alt text, visible focus ring, state shown with text/icons and not color alone,
 44px touch targets, responsive layout down to phone width.
 
-**Why plain JavaScript:** every behaviour can be read top to bottom, which makes the code explainable.
+**Why React:** it is the common standard for web frontends. Components keep each part of a page small and reusable, and the
+page always matches the data (state), so there is no manual "find the element and change it" code.
 
 ## 10. The external API (TMDB)
 
@@ -254,7 +270,7 @@ breaking the whole list. TMDB's required attribution appears in the footer of ev
 ## 11. Deployment with Docker
 
 - `backend/Dockerfile`: Python 3.12 slim image, installs requirements first (so rebuilds are fast), runs `uvicorn`.
-- `frontend/Dockerfile`: nginx image with the site files copied in.
+- `frontend/Dockerfile`: two stages. A Node image runs `npm install` and `npm run build` (Vite) to make the static files; then a small nginx image keeps only those files. `nginx.conf` sends `index.html` for unknown addresses, so a refresh on `/wishlist` still works.
 - `docker-compose.yml`: `db` (with a health check and a volume), `backend` (waits for the database to be healthy), `frontend`.
   Settings come from `.env` through `${...}` variables.
 - Run: `docker compose up --build`. Site on port 8080, API on 8000.
@@ -310,7 +326,7 @@ Manual test checklist (tick each one and add a screenshot):
 - [ ] `python -m unittest discover -s tests` in `backend` passes.
 - [ ] Restart with `docker compose up`: data is still there.
 
-Interactive API testing is available at `/docs`. The frontend flows were also tested with an automated headless-browser script against a mock API.
+Interactive API testing is available at `/docs`. The frontend flows (login, role guards, search dropdown, details, wishlist, history, taste, The Reel, admin) were also tested with an automated headless-browser script against a mock API.
 
 ## 13. Problems and how they were solved
 

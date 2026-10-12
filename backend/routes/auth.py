@@ -109,7 +109,7 @@ def forgot_password(data: ForgotPasswordRequest, background: BackgroundTasks,
                     db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == data.email).first()
     if user:
-        link = f"{config.FRONTEND_URL}/reset-password.html?token={create_reset_token(user)}"
+        link = f"{config.FRONTEND_URL}/reset-password?token={create_reset_token(user)}"
         body = (f"Hi {user.username},\n\nSomeone asked to reset your Framerate password. "
                 f"Open this link within {config.RESET_TOKEN_EXPIRE_MINUTES} minutes:\n\n{link}\n\n"
                 "If it was not you, ignore this email and nothing changes.")

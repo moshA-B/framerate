@@ -47,12 +47,12 @@ app = FastAPI(title="Framerate API")
 
 # CORS lets the website (a different address) call this API.
 # Without it the browser blocks the requests.
-# 8080 = the nginx container, 5500 = VS Code Live Server (handy while developing).
+# 8080 = the nginx container, 5173 = the Vite dev server (npm run dev, handy while developing).
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:8080", "http://127.0.0.1:8080",
-        "http://localhost:5500", "http://127.0.0.1:5500",
+        "http://localhost:5173", "http://127.0.0.1:5173",
     ] + config.CORS_ORIGINS,  # CORS_ORIGINS in .env adds more (e.g. the VM's address)
     allow_methods=["*"],
     allow_headers=["*"],

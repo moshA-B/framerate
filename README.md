@@ -4,7 +4,7 @@ A movie and TV-series tracker. Browse and search titles (data from TMDB), keep a
 mark what you watched with a rating and review, and track the episode you are on.
 Managers get an admin page with statistics and user management.
 
-Stack: FastAPI (Python) backend, PostgreSQL database, plain HTML/CSS/JavaScript frontend
+Stack: FastAPI (Python) backend, PostgreSQL database, React frontend (Vite)
 served by nginx, everything started with Docker Compose.
 
 ## Run it (on the VM or any machine with Docker)
@@ -39,7 +39,7 @@ Delete everything including the database: `docker compose down -v`.
 2. "APIs & Services" > "OAuth consent screen": choose External, fill the app name and your email, save.
    Under "Test users" add the Google accounts you will use (the app stays in testing mode, which is fine).
 3. "Credentials" > "Create credentials" > "OAuth client ID" > type **Web application**.
-4. Under "Authorized JavaScript origins" add `http://localhost:8080` (and `http://localhost:5500` if you use Live Server).
+4. Under "Authorized JavaScript origins" add `http://localhost:8080` (and `http://localhost:5173` if you use the Vite dev server).
    Google does not accept a plain IP address here, so use the SSH tunnel and `localhost`.
 5. Copy the client ID into `.env` as `GOOGLE_CLIENT_ID=...` and restart (`docker compose up --build`).
    The "Continue with Google" button now appears on the login and register pages.
@@ -68,13 +68,20 @@ py -m venv .venv
 pip install -r requirements.txt
 python main.py
 ```
-Without `DATABASE_URL` it uses a local SQLite file. Open `frontend/index.html` with VS Code Live Server (port 5500).
+Without `DATABASE_URL` it uses a local SQLite file. 
+For the frontend without Docker (needs Node.js 20+):
+```
+cd frontend
+npm install
+npm run dev
+```
+Then open http://localhost:5173 (the backend must run on port 8000).
 
 ## Folders
 
 ```
 backend/    FastAPI app: routes/ (endpoints), services/ (TMDB, email, Google), models.py, schemas.py, security.py
-frontend/   HTML pages, css/style.css, js/ (one script per page + api.js, auth.js, ui.js)
+frontend/   React app: src/pages (one component per page), src/components, api.js, AuthContext.jsx, css/style.css
 docs/       the project book
 docker-compose.yml   db + backend + frontend
 ```
