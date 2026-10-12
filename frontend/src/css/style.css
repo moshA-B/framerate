@@ -16,6 +16,14 @@
 /* ---------- 2. Base ---------- */
 * { box-sizing: border-box; }
 
+/* React draws the whole site inside <div id="root">, so #root (not body) must be the column that
+   pushes the footer to the bottom. Without this the footer floats in the middle of a short page. */
+#root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
