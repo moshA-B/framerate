@@ -29,13 +29,15 @@ function Entry({ item, chip, deleteUrl, removeLabel, review, onGone }) {
   return (
     <div>
       <TitleCard item={item} chip={chip} />
-      {review && <p className="review">"{review}"</p>}
       <div className="row card-actions">
         {/* Editing happens on the details page, where the rating form is */}
         <Link className="btn btn-small" to={detailsPath(item)}>Edit</Link>
         <button className="btn btn-small" type="button" disabled={busy}
                 aria-label={`${removeLabel}: ${item.title}`} onClick={remove}>{removeLabel}</button>
       </div>
+      {/* The review goes UNDER the buttons, so it never changes the height of the card
+          (all cards in a row stay the same size). */}
+      {review && <p className="entry-review">"{review}"</p>}
     </div>
   );
 }
@@ -63,7 +65,7 @@ export default function History() {
         <h2 className="section-title cobalt">Currently watching</h2>
         {progress === null && <Skeletons count={3} />}
         {progress !== null && progress.length > 0 && (
-          <div className="grid">
+          <div className="grid grid-rows">
             {progress.map((item) => (
               <Entry key={item.tmdb_id} item={item} chip={{ text: `S${item.season} E${item.episode}`, cls: "chip-cobalt" }}
                      deleteUrl={`/api/me/progress/${item.tmdb_id}`} removeLabel="Stop tracking" review={null}
@@ -80,7 +82,7 @@ export default function History() {
         <h2 className="section-title sky">Watched</h2>
         {watched === null && <Skeletons count={6} />}
         {watched !== null && watched.length > 0 && (
-          <div className="grid">
+          <div className="grid grid-rows">
             {watched.map((item) => (
               <Entry key={`${item.media_type}-${item.tmdb_id}`} item={item}
                      chip={{ text: item.my_rating ? `Your rating ${item.my_rating}/10` : "Watched", cls: "chip-sky" }}

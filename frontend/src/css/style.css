@@ -565,3 +565,12 @@ input, select, textarea { font-size: 15px; min-height: 38px; }
   .stage:not(.wide) .card .muted { font-size: 13.5px; margin: 6px 0 0; }
   .pick { grid-template-columns: 190px 1fr; gap: 24px; }
 }
+
+/* ---------- 20. Equal card heights ----------
+   Wishlist and History put a card, its buttons and (History) a review in one grid cell, wrapped in a <div>.
+   Every such cell spans 3 rows and uses "subgrid", so the rows are shared by the whole line of cells:
+   all cards in a line get the same height, the buttons line up under them, and a long review
+   only adds space below, never to the card itself. (row-gap is 0 here; the padding makes the space.) */
+.grid-rows { row-gap: 0; }
+.grid-rows > div { display: grid; grid-template-rows: subgrid; grid-row: span 3; padding-bottom: 24px; }
+.entry-review { font-size: 14px; margin: 8px 0 0; font-style: italic; overflow-wrap: anywhere; }
