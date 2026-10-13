@@ -114,7 +114,7 @@ export default function Reel() {
             ))}
           </div>
         )}
-        <div className="row section">
+        <div className="row section" style={{ marginTop: 28 }}>   {/* space between the genres and the button */}
           <button className="btn btn-primary" type="button" disabled={busy} onClick={start}>Start the Reel</button>
         </div>
       </div>
