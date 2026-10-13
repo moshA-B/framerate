@@ -248,11 +248,7 @@ class ReviewPage(BaseModel):
     results: list[ReviewItem]
 
 
-# ---------------- Google sign-in and password reset ----------------
-class GoogleLoginRequest(BaseModel):
-    credential: str            # the ID token Google gives the browser after the user picks an account
-
-
+# ---------------- password reset ----------------
 class ForgotPasswordRequest(BaseModel):
     email: Email
 
@@ -264,11 +260,6 @@ class ResetPasswordRequest(BaseModel):
 
 class Message(BaseModel):
     message: str
-
-
-class AuthConfig(BaseModel):
-    # Public settings the website needs before login.
-    google_client_id: str      # empty string = Google sign-in is not set up
 
 
 # ---------------- genres, autocomplete ----------------

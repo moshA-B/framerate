@@ -6,7 +6,6 @@ import { api } from "../api.js";
 import { useAuth } from "../AuthContext.jsx";
 import { useAfterLogin, useTitle } from "../hooks.js";
 import ErrorMessage from "../components/ErrorMessage.jsx";
-import GoogleButton from "../components/GoogleButton.jsx";
 
 export default function Register() {
   useTitle("Register");
@@ -59,7 +58,6 @@ export default function Register() {
         </div>
         <button className="btn btn-accent" type="submit" id="submit" disabled={busy}>Create account</button>
       </form>
-      <GoogleButton />
       <div className="form-links">
         <Link to="/login">Already have an account? Login</Link>
       </div>

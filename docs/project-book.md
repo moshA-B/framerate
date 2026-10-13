@@ -28,7 +28,7 @@ permissions, and every feature maps to a simple database table.
 | Database | PostgreSQL (SQLite for local development), accessed with SQLAlchemy. |
 | External API | TMDB (The Movie Database): search, popular, trending, details, cast, streaming providers, episodes. |
 | Project book | This document. |
-| Extras | Sign in with Google, forgot-password by email, Docker Compose deployment. |
+| Extras | Forgot-password by email, Docker Compose deployment. |
 
 ## 3. Architecture
 
@@ -38,7 +38,6 @@ flowchart LR
     B -->|JSON over HTTP<br/>fetch + JWT| A[FastAPI container<br/>port 8000]
     A -->|SQLAlchemy| D[(PostgreSQL container)]
     A -->|httpx + API key| T[TMDB API]
-    A -->|ID token check| G[Google]
     A -->|SMTP| M[Email server]
 ```
 
@@ -58,7 +57,7 @@ flowchart TD
     main[main.py<br/>creates the app, CORS, plugs in routers] --> routes
     routes[routes/<br/>auth.py, movies.py, lists.py, admin.py<br/>thin: check input, call services, return result] --> services
     routes --> dependencies[dependencies.py<br/>get_current_user, require_manager]
-    services[services/<br/>tmdb.py, google.py, mailer.py] --> ext[outside world]
+    services[services/<br/>tmdb.py, mailer.py] --> ext[outside world]
     routes --> models[models.py<br/>tables]
     models --> database[database.py<br/>engine, session]
     routes --> schemas[schemas.py<br/>shape and validation of requests/responses]
@@ -73,8 +72,8 @@ flowchart TD
 | **SQLAlchemy** | Tables are Python classes, so no hand-written SQL, and the same code works on SQLite and PostgreSQL. |
 | **PostgreSQL** | A real production database; fits the Docker setup. |
 | **PyJWT** | Signed login tokens. |
-| **httpx** | Calls to TMDB and Google. |
-| **Plain JS (no framework)** | Small enough to explain line by line; shows how the browser talks to an API. |
+| **httpx** | Calls to TMDB. |
+| **React + Vite** | Pages built from small components; one `api()` helper talks to the backend. |
 | **Docker Compose** | One command starts everything the same way on any machine. |
 
 ## 5. Database design
@@ -138,8 +137,6 @@ All paths start with `/api`. "Login" = needs a valid token. Interactive docs: `h
 | `POST /auth/register` | public | Create a user (role is always `user`). |
 | `POST /auth/login` | public | Returns a JWT and the user. |
 | `GET /auth/me` | login | The current user. |
-| `GET /auth/config` | public | Tells the site whether Google sign-in is configured. |
-| `POST /auth/google` | public | Log in or register with a Google ID token. |
 | `POST /auth/forgot-password` | public | Emails a reset link (same answer for unknown emails). |
 | `POST /auth/reset-password` | public (token) | Sets a new password using the emailed token. |
 | `GET /titles/search?q=&page=` | public | Search movies and series. |
@@ -162,7 +159,7 @@ All paths start with `/api`. "Login" = needs a valid token. Interactive docs: `h
 | `GET /admin/stats` | manager | Counts, average rating, top 5 most watched. |
 
 Status codes used: 200/201/204 success, 400 bad request, 401 not logged in or bad token, 403 not a
-manager, 404 not found, 409 conflict (duplicate), 422 invalid input (automatic), 502 TMDB/Google
+manager, 404 not found, 409 conflict (duplicate), 422 invalid input (automatic), 502 TMDB
 unreachable, 503 a feature is not configured.
 
 ## 7. Security
@@ -188,8 +185,6 @@ unreachable, 503 a feature is not configured.
 11. **Password reset:** the link contains a signed token that expires after 30 minutes, is marked
     `purpose=reset` (a login token cannot be used as one), and includes a fingerprint of the current password,
     so it works only once. The form answers the same way whether or not the email exists.
-12. **Google sign-in:** the backend asks Google to verify the ID token, checks that it was issued for *our*
-    client ID and that the email is verified. Only then does it log the user in (creating the account if needed).
 
 **Known limits (honest list):** the token is kept in `localStorage`, so a successful XSS attack could read it
 (mitigated by point 8); there is no login rate-limiting; the API is served over plain HTTP, so a real deployment
@@ -244,7 +239,7 @@ Reel, Admin, Login, Register, Forgot password, Reset password.
 - `api.js`: the `api()` function that adds the token, handles errors (a 401 logs you out), and stores the login in `localStorage`.
 - `hooks.js`: small reusable hooks (page title, add to wishlist, where to go after login).
 - `components/`: pieces used on several pages: Navbar, Footer, TitleCard, Poster, Skeletons, EmptyState, ErrorMessage,
-  ConfirmButton (two-click delete), GoogleButton.
+  ConfirmButton (two-click delete).
 
 **Ideas used.** *State* (`useState`): values that redraw the page when they change, such as the list of wishlist items.
 *Effects* (`useEffect`): code that runs after a component appears, such as loading data; it returns a cleanup function that
@@ -317,7 +312,6 @@ Manual test checklist (tick each one and add a screenshot):
 - [ ] Save series progress; "I'm here" on an episode.
 - [ ] Admin: statistics, delete a user; deleting yourself is refused.
 - [ ] Forgot password: the link appears in the log (or email); the new password works; the same link a second time is refused.
-- [ ] Sign in with Google (if configured).
 - [ ] Home: genre pills and the Movies / Series switch change the titles.
 - [ ] Search: typing 2+ letters shows a dropdown of titles starting with them.
 - [ ] Refine my taste: thumbs up / down / skip (also with the arrow keys); "Your taste so far" updates.

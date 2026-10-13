@@ -33,17 +33,6 @@ Then use the same `localhost` addresses in your PC's browser.
 Stop: `Ctrl+C`. Start again without rebuilding: `docker compose up`.
 Delete everything including the database: `docker compose down -v`.
 
-## Optional: Sign in with Google
-
-1. Go to https://console.cloud.google.com/ and create a project.
-2. "APIs & Services" > "OAuth consent screen": choose External, fill the app name and your email, save.
-   Under "Test users" add the Google accounts you will use (the app stays in testing mode, which is fine).
-3. "Credentials" > "Create credentials" > "OAuth client ID" > type **Web application**.
-4. Under "Authorized JavaScript origins" add `http://localhost:8080` (and `http://localhost:5173` if you use the Vite dev server).
-   Google does not accept a plain IP address here, so use the SSH tunnel and `localhost`.
-5. Copy the client ID into `.env` as `GOOGLE_CLIENT_ID=...` and restart (`docker compose up --build`).
-   The "Continue with Google" button now appears on the login and register pages.
-
 ## Optional: password-reset emails
 
 Without SMTP settings nothing is emailed: the reset link is printed in the backend log
@@ -80,7 +69,7 @@ Then open http://localhost:5173 (the backend must run on port 8000).
 ## Folders
 
 ```
-backend/    FastAPI app: routes/ (endpoints), services/ (TMDB, email, Google), models.py, schemas.py, security.py
+backend/    FastAPI app: routes/ (endpoints), services/ (TMDB, email), models.py, schemas.py, security.py
 frontend/   React app: src/pages (one component per page), src/components, api.js, AuthContext.jsx, css/style.css
 docs/       the project book
 docker-compose.yml   db + backend + frontend

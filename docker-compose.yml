@@ -50,8 +50,6 @@ services:
       MANAGER_USERNAME: ${MANAGER_USERNAME}
       MANAGER_EMAIL: ${MANAGER_EMAIL}
       MANAGER_PASSWORD: ${MANAGER_PASSWORD}
-      # Sign in with Google (optional). Empty = no Google button.
-      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
       # Password-reset emails (optional). Empty SMTP_HOST = the link is printed in the log.
       FRONTEND_URL: ${FRONTEND_URL:-http://localhost:8080}
       CORS_ORIGINS: ${CORS_ORIGINS:-}

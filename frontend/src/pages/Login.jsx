@@ -5,7 +5,6 @@ import { api } from "../api.js";
 import { useAuth } from "../AuthContext.jsx";
 import { useAfterLogin, useTitle } from "../hooks.js";
 import ErrorMessage from "../components/ErrorMessage.jsx";
-import GoogleButton from "../components/GoogleButton.jsx";
 
 export default function Login() {
   useTitle("Login");
@@ -54,7 +53,6 @@ export default function Login() {
         </div>
         <button className="btn btn-primary" type="submit" id="submit" disabled={busy}>Login</button>
       </form>
-      <GoogleButton />
       <div className="form-links">
         <Link to="/forgot-password">Forgot your password?</Link>
         <Link to="/register">New here? Create an account</Link>

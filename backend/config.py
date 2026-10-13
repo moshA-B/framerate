@@ -29,10 +29,6 @@ MANAGER_EMAIL = os.getenv("MANAGER_EMAIL", "manager@example.com")
 MANAGER_PASSWORD = os.getenv("MANAGER_PASSWORD", "")
 
 # ---------------------------------------------------------------------------
-# Sign in with Google. Create a free "OAuth client ID" (type: Web application) in
-# Google Cloud Console and put it in .env. Empty = the Google button is hidden.
-GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "")
-
 # Where the website lives. Used to build the link inside the password-reset email.
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:8080").rstrip("/")
 
