@@ -10,7 +10,7 @@ export function AuthProvider({ children }) {
   // `user` is null when logged out. We start from what the browser remembered (localStorage).
   const [user, setUser] = useState(getUser());
 
-  // Called after a successful login / register / Google sign-in.
+  // Called after a successful login or register.
   function login(data) {
     saveLogin(data);      // remember the token and user in the browser
     setUser(data.user);   // and tell React, so the navbar and pages update

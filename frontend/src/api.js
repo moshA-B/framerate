@@ -19,7 +19,7 @@ export function getUser() {
 }
 
 export function saveLogin(data) {
-  // `data` is what POST /api/auth/login (or /google) returns: {access_token, user}
+  // `data` is what POST /api/auth/login returns: {access_token, user}
   localStorage.setItem("token", data.access_token);
   localStorage.setItem("user", JSON.stringify(data.user));
 }
