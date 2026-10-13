@@ -15,6 +15,8 @@ PICKS = 8          # titles the Reel keeps in reserve for "throw me another"
 TOP_N = 20         # the Reel picks at random among the best TOP_N candidates...
 WEIGHT_POWER = 4   # ...but better scores are more likely: weight = score ** WEIGHT_POWER (0 = fully random)
 PAGES = 4          # TMDB pages fetched per search, so the candidate pool is wide (20 titles per page)
+SEEDS = 4          # "For you" looks at the recommendations of this many liked titles each time...
+SEED_ROWS = 3      # ...and shows a "Because you liked X" row for up to this many of them
 
 EMPTY_MOOD = rec.mood_from_answers([], {})   # "no quiz": every mood number is zero
 
@@ -84,7 +86,23 @@ def profile_summary(rows, tmdb):
             "low": named(rec.top_genres(profile, 3, positive=False))}
 
 
-def _collect(media_type, signals, profile, tmdb, extra_calls=()):
+def pick_seeds(signals, media_type, rng, avoid=(), count=SEEDS):
+    # Chooses which liked titles "For you" asks TMDB about. It is a weighted random draw
+    # over ALL liked titles (a title you loved is more likely, but never certain), so
+    # every visit can use different ones.
+    # avoid = TMDB ids used on the last visits. Titles NOT in it are drawn first; the
+    # avoided ones are only used to fill up when there are too few others.
+    liked = [s for s in signals if s["weight"] >= 0.5 and s["key"][0] == media_type]
+    fresh = [s for s in liked if str(s["key"][1]) not in avoid]
+    old = [s for s in liked if str(s["key"][1]) in avoid]
+    # weighted_order (below) shuffles the list so higher weights tend to come first. power=1 keeps it
+    # gentle: a title you loved is only about twice as likely as one you liked a little.
+    order = (weighted_order([(s["weight"], s) for s in fresh], rng, power=1)
+             + weighted_order([(s["weight"], s) for s in old], rng, power=1))
+    return [s for _, s in order[:count]]
+
+
+def _collect(media_type, signals, profile, tmdb, extra_calls=(), seeds=None):
     # Gathers candidate titles from TMDB: its recommendations for the titles the user
     # liked most, plus popular titles in the user's best genres.
     # Returns (pool, rec_bonus, rec_sources, rec_lists, extra_results):
@@ -92,8 +110,10 @@ def _collect(media_type, signals, profile, tmdb, extra_calls=()):
     #   rec_bonus   {key: 0..1}               how strongly TMDB recommends it for this user
     #   rec_sources {key: [title, ...]}       which liked titles led to it (for the reason text)
     #   rec_lists   [(signal, [card, ...])]   the recommendation list of each liked title
-    liked = sorted((s for s in signals if s["weight"] >= 0.5 and s["key"][0] == media_type),
-                   key=lambda s: -s["weight"])[:3]
+    # `seeds` = the liked titles to ask about. Without it (the Reel) we use the 3 best-loved ones.
+    liked = seeds if seeds is not None else sorted(
+        (s for s in signals if s["weight"] >= 0.5 and s["key"][0] == media_type),
+        key=lambda s: -s["weight"])[:3]
     best = rec.to_tmdb_genres(media_type, rec.top_genres(profile, 3))
 
     calls = [(lambda s=s: tmdb.recommendations(media_type, s["key"][1])) for s in liked]
@@ -122,8 +142,11 @@ def _collect(media_type, signals, profile, tmdb, extra_calls=()):
 # ----------------------------------------------------------------------------
 # "For you" tab
 # ----------------------------------------------------------------------------
-def for_you(rows, media_type, excluded, tmdb):
+def for_you(rows, media_type, excluded, tmdb, rng=None, avoid=()):
     # excluded = keys the user already watched / wishlisted / rated: never suggested again.
+    # rng   = random source; a new one on every visit, so the picks change (tests pass a fixed one).
+    # avoid = TMDB ids of the liked titles used on the last visits; they are skipped if possible.
+    rng = rng or random.Random()
     signals = gather(rows, tmdb)
     profile = profile_of(signals)
     favorite = rec.top_genres(profile, 3)
@@ -133,7 +156,8 @@ def for_you(rows, media_type, excluded, tmdb):
     # one extra request: the single best genre, for the "More X for you" row
     single = rec.to_tmdb_genres(media_type, favorite[:1])
     extra = [lambda: tmdb.discover(media_type, single or None, 1, "popularity.desc", 500)["results"]]
-    pool, rec_bonus, rec_sources, rec_lists, extras = _collect(media_type, signals, profile, tmdb, extra)
+    seeds = pick_seeds(signals, media_type, rng, avoid)
+    pool, rec_bonus, rec_sources, rec_lists, extras = _collect(media_type, signals, profile, tmdb, extra, seeds)
 
     liked_keys = {s["key"] for s, _ in rec_lists}
     scored = []
@@ -154,13 +178,17 @@ def for_you(rows, media_type, excluded, tmdb):
             used.update(_key(c) for c in fresh)
             rows_out.append({"title": title, "items": fresh})
 
-    add_row("Picked for you", [card for _, _, card in scored], TOP_ROW)
-    for signal, cards in rec_lists[:2]:
+    # Not always the very best 8: draw them from the best TOP_N (better score = more likely)
+    top = weighted_order(scored[:TOP_N], rng)
+    add_row("Picked for you", [card for _, _, card in top], TOP_ROW)
+    for signal, cards in rec_lists[:SEED_ROWS]:
         ranked = sorted(cards, key=lambda c: -score_of.get(_key(c), -9))
         add_row(f"Because you liked {signal['title']}", ranked)
     if extras and extras[0]:
         add_row(f"More {rec.GENRES[favorite[0]]} for you", extras[0])
-    return {"needs_more": False, "signals": len(signals), "rows": rows_out}
+    # `seeds` goes back to the browser, which sends it as `avoid` next time
+    return {"needs_more": False, "signals": len(signals), "rows": rows_out,
+            "seeds": [str(sig["key"][1]) for sig in seeds]}
 
 
 # ----------------------------------------------------------------------------
@@ -254,13 +282,13 @@ def _picks(answers, seed, lean, rows, wishlist_refs, seen, bank, tmdb):
     return [dict(card, reasons=reasons) for _, card, reasons in chosen[:PICKS]]
 
 
-def weighted_order(items, rng):
+def weighted_order(items, rng, power=WEIGHT_POWER):
     # items = [(score, ...)]. Returns them in a random order where high scores tend to come first.
-    # Each round draws one item with chance proportional to score ** WEIGHT_POWER, then removes it.
+    # Each round draws one item with chance proportional to score ** power, then removes it.
     left = list(items)
     order = []
     while left:
-        weights = [max(item[0], 0.01) ** WEIGHT_POWER for item in left]
+        weights = [max(item[0], 0.01) ** power for item in left]
         index = rng.choices(range(len(left)), weights=weights)[0]
         order.append(left.pop(index))
     return order

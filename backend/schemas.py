@@ -318,6 +318,7 @@ class ForYouOut(BaseModel):
     needs_more: bool           # True = not enough history yet, ask the user to rate some titles
     signals: int
     rows: list[ForYouRow]
+    seeds: list[str] = []      # TMDB ids of the liked titles used this time (the browser sends them back as `avoid`)
 
 
 class ReelAnswer(BaseModel):

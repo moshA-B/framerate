@@ -2,7 +2,7 @@
 # The routes only collect data and call services/engine.py, where the real work is.
 from typing import Literal
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from database import get_db
@@ -18,11 +18,14 @@ BANK = recommender.load_bank()   # the quiz scenarios, read once when the server
 
 
 @router.get("/api/me/for-you", response_model=ForYouOut)
-def for_you(media_type: MediaType = "movie", user: User = Depends(get_current_user),
-            db: Session = Depends(get_db)):
+def for_you(media_type: MediaType = "movie", avoid: str = Query("", max_length=200),
+            user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     # Personalised rows for the home page. Needs a login (it uses the user's history).
+    # `avoid` = comma-separated TMDB ids of liked titles used on earlier visits ("12,345,6").
+    # The engine uses a new random draw each time, so the rows change on every visit.
     data = signals.load_user_data(db, user)
-    return engine.for_you(data["rows"], media_type, data["seen"] | data["wishlist"], tmdb)
+    avoided = [a[:10] for a in avoid.split(",") if a.strip()][:30]
+    return engine.for_you(data["rows"], media_type, data["seen"] | data["wishlist"], tmdb, avoid=avoided)
 
 
 @router.post("/api/reel/next", response_model=ReelOut)

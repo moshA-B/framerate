@@ -134,19 +134,43 @@ function GenreView({ mediaType, genre }) {
 }
 
 // --- "For you"
+// Every visit the server picks different liked titles to base the rows on. To make sure it does not
+// repeat the ones it used last time, the browser remembers them and sends them back as `avoid`.
+const SEEN_LIMIT = 12;                                   // how many recent seed titles to remember
+
+function readSeen(mediaType) {
+  try { return JSON.parse(localStorage.getItem(`framerate_foryou_seen_${mediaType}`)) || []; }
+  catch { return []; }                                   // storage blocked or broken: just start empty
+}
+
+function saveSeen(mediaType, seeds) {
+  // newest first, no repeats, only the latest SEEN_LIMIT
+  const all = [...new Set([...seeds, ...readSeen(mediaType)])].slice(0, SEEN_LIMIT);
+  try { localStorage.setItem(`framerate_foryou_seen_${mediaType}`, JSON.stringify(all)); } catch { /* ignore */ }
+}
+
 function ForYouView({ mediaType }) {
   const { user } = useAuth();
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
+  const [round, setRound] = useState(0);               // goes up by 1 on every "Refresh picks" click
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     if (!user) return;
     let cancelled = false;
-    api(`/api/me/for-you?media_type=${mediaType}`)
-      .then((d) => { if (!cancelled) setData(d); })
-      .catch((e) => { if (!cancelled) setError(e.message); });
+    setRefreshing(true);
+    const avoid = readSeen(mediaType).join(",");
+    api(`/api/me/for-you?media_type=${mediaType}&avoid=${avoid}`)
+      .then((d) => {
+        if (cancelled) return;
+        saveSeen(mediaType, d.seeds || []);
+        setData(d);
+      })
+      .catch((e) => { if (!cancelled) setError(e.message); })
+      .finally(() => { if (!cancelled) setRefreshing(false); });
     return () => { cancelled = true; };
-  }, [mediaType, user]);
+  }, [mediaType, user, round]);
 
   if (!user) {
     return (
@@ -174,6 +198,9 @@ function ForYouView({ mediaType }) {
       <div className="row section">
         <Link className="btn" to="/taste">Refine my taste</Link>
         <Link className="btn btn-accent" to="/reel">Roll the reel</Link>
+        <button className="btn" type="button" disabled={refreshing} onClick={() => setRound(round + 1)}>
+          {refreshing ? "Refreshing…" : "↻ Refresh picks"}
+        </button>
       </div>
       {data.rows.map((row, i) => (
         <Section key={row.title} title={row.title} color={colors[i % 3]}><CardsGrid items={row.items} /></Section>

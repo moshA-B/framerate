@@ -261,6 +261,44 @@ class EngineTests(unittest.TestCase):
         # a sci-fi drama (the user's favorite mix) leads the first row
         self.assertIn(out["rows"][0]["items"][0]["tmdb_id"], (9, 2, 6))
 
+    def many_liked(self):
+        # 6 liked sci-fi titles (ids 1, 2, 6, 7, 9, 10), each with its own recommendations
+        recs = {i: [j for j in range(11, 25)] for i in (1, 2, 6, 7, 9, 10)}
+        tmdb = FakeTmdb(self.catalog, recs=recs)
+        rows = self.rows(*[(i, "rating", 10) for i in (1, 2, 6, 7, 9, 10)], (4, "dislike", None))
+        return tmdb, rows
+
+    def test_for_you_seeds_vary(self):
+        # different random draws must not always use the same liked titles
+        tmdb, rows = self.many_liked()
+        seen = set()
+        for n in range(12):
+            out = engine.for_you(rows, "movie", set(), tmdb, random.Random(n))
+            self.assertEqual(len(out["seeds"]), engine.SEEDS)
+            seen.update(out["seeds"])
+        self.assertGreater(len(seen), engine.SEEDS)          # more than one fixed group of 4
+
+    def test_for_you_avoid(self):
+        # titles in `avoid` are skipped when enough other liked titles exist
+        tmdb, rows = self.many_liked()
+        for n in range(12):
+            out = engine.for_you(rows, "movie", set(), tmdb, random.Random(n), avoid=["1", "2"])
+            self.assertNotIn("1", out["seeds"])
+            self.assertNotIn("2", out["seeds"])
+
+    def test_for_you_avoid_fills_up(self):
+        # with too few other liked titles the avoided ones are still used (the page must not go empty)
+        tmdb, rows = self.many_liked()
+        out = engine.for_you(rows, "movie", set(), tmdb, random.Random(1), avoid=["1", "2", "6", "7", "9"])
+        self.assertEqual(len(out["seeds"]), engine.SEEDS)
+        self.assertIn("10", out["seeds"])
+
+    def test_for_you_same_rng_same_result(self):
+        tmdb, rows = self.many_liked()
+        a = engine.for_you(rows, "movie", set(), tmdb, random.Random(5))
+        b = engine.for_you(rows, "movie", set(), tmdb, random.Random(5))
+        self.assertEqual(a["seeds"], b["seeds"])
+
     def test_taste_batch(self):
         batch = engine.taste_batch(5, "movie", {("movie", 1)}, self.tmdb, random.Random(1))
         self.assertTrue(all(c["poster_url"] for c in batch))
